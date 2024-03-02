@@ -1,44 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
+/*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mel-hadd <mel-hadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/26 15:31:28 by mel-hadd          #+#    #+#             */
-/*   Updated: 2024/03/02 14:29:51 by mel-hadd         ###   ########.fr       */
+/*   Created: 2023/12/10 14:41:16 by mel-hadd          #+#    #+#             */
+/*   Updated: 2024/02/28 20:45:47 by mel-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-# define PIPEX_H
+#ifndef GET_NEXT_LINE_H
+# define GET_NEXT_LINE_H
 
-# include "./Libft/libft.h"
-# include <errno.h>
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 5
+# endif
+
 # include <fcntl.h>
+# include <limits.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
-#include <sys/wait.h>
 
 
-typedef struct data_s
-{
-	int		fdi;
-	int		fdo;
-	int		i;
-	int		fds[2];
-	pid_t	pid;
-	pid_t pid2;
-	char	*path;
-	char	**cmd;
-	char	**cmd2;
-
-}			data_t;
-
-void		ft_error(void);
-char		*read_path(char **env, char *av);
-void child (char **env, char **av, int fd_1);
-void child_2(char **env, char **av, int fd_0);
+char	*get_next_line(int fd);
+char	*ft_substr(char const *s, unsigned int start, size_t len);
+char	*ft_strjoin_2(char *s1, char const *s2);
+char	*ft_strdup(const char *s);
+void	*ft_memcpy(void *dest, const void *src, size_t n);
+size_t	ft_strlen(const char *str);
 
 #endif
