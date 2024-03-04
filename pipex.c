@@ -3,20 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-hadd <mel-hadd@student.42.fr>          +#+  +:+       +#+        */
+/*   By: medmed <medmed@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 15:30:55 by mel-hadd          #+#    #+#             */
-/*   Updated: 2024/03/02 15:47:02 by mel-hadd         ###   ########.fr       */
+/*   Updated: 2024/03/03 22:35:10 by medmed           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-int	file_open(const char *s)
+int	file_open(const char *filename, int i)
 {
 	int	fd;
-
-	fd = open(s, O_RDWR | O_CREAT, 0644);
+	if (i == 1)
+	{
+		if (access(filename,F_OK))
+		{
+			perror("error file");
+			exit(0);
+		}
+		fd = open(filename, O_RDONLY, 0644);
+		return fd;
+	}
+	else
+		fd = open(filename, O_RDWR, 0644);
 	return (fd);
 }
 char	*read_path(char **env, char *av)
@@ -47,28 +57,28 @@ void	child(char **env, char **av, int fd_1)
 {
 	data_t	o;
 
-	o.fdi = file_open(av[1]);
+	o.fdi = file_open(av[1], 1);
 	o.cmd = ft_split(av[2], ' ');
 	o.path = read_path(env, o.cmd[0]);
 	dup2(o.fdi, 0);
 	dup2(fd_1, 1);
 	close(fd_1);
 	if (execve(o.path, o.cmd, env) < 0)
-		perror("error in execve1");
+		ft_error("error in execve1");
 }
 
 void	child_2(char **env, char **av, int fd_0)
 {
 	data_t	o;
 
-	o.fdo = file_open(av[4]);
+	o.fdo = file_open(av[4],0);
 	o.cmd2 = ft_split(av[3], ' ');
 	o.path = read_path(env, o.cmd2[0]);
 	dup2(fd_0, 0);
 	dup2(o.fdo, 1);
 	close(fd_0);
 	if (execve(o.path, o.cmd2, env) < 0)
-		perror("error in execve2");
+		ft_error("error in execve2");
 }
 int	main(int ac, char **av, char **env)
 {
@@ -77,10 +87,10 @@ int	main(int ac, char **av, char **env)
 	if (ac == 1)
 		return (0);
 	if (pipe(o.fds) == -1)
-		perror("error");
+		ft_error("error pipe");
 	o.pid = fork();
 	if (o.pid == -1)
-		perror("error in fork");
+		ft_error("error pipe");
 	if (o.pid == 0)
 	{
 		close(o.fds[0]);

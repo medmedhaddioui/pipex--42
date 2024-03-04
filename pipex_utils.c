@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-hadd <mel-hadd@student.42.fr>          +#+  +:+       +#+        */
+/*   By: medmed <medmed@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 16:08:09 by mel-hadd          #+#    #+#             */
-/*   Updated: 2024/02/29 15:59:58 by mel-hadd         ###   ########.fr       */
+/*   Updated: 2024/03/03 16:52:59 by medmed           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,11 @@ void	ft_free(char **arr)
 		j++;
 	}
 	free(arr);
+}
+void ft_error (char *s)
+{
+	perror(s);
+	exit(0);
 }
 
 

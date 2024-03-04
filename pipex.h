@@ -3,24 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-hadd <mel-hadd@student.42.fr>          +#+  +:+       +#+        */
+/*   By: medmed <medmed@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 15:31:28 by mel-hadd          #+#    #+#             */
-/*   Updated: 2024/03/02 14:29:51 by mel-hadd         ###   ########.fr       */
+/*   Updated: 2024/03/04 00:10:01 by medmed           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PIPEX_H
 # define PIPEX_H
 
-# include "./Libft/libft.h"
+# include "./libft/libft.h"
 # include <errno.h>
 # include <fcntl.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
 #include <sys/wait.h>
-
 
 typedef struct data_s
 {
@@ -36,8 +35,8 @@ typedef struct data_s
 
 }			data_t;
 
-void		ft_error(void);
-char		*read_path(char **env, char *av);
+void ft_error (char *s);
+char	*read_path(char **env, char *av);
 void child (char **env, char **av, int fd_1);
 void child_2(char **env, char **av, int fd_0);
 
