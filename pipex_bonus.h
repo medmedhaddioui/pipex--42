@@ -1,17 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
+/*   pipex_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mel-hadd <mel-hadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/26 15:31:28 by mel-hadd          #+#    #+#             */
-/*   Updated: 2024/03/04 15:58:33 by mel-hadd         ###   ########.fr       */
+/*   Created: 2024/03/04 16:21:19 by mel-hadd          #+#    #+#             */
+/*   Updated: 2024/03/04 16:21:38 by mel-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-# define PIPEX_H
+
+#ifndef PIPEX_BONUS_H
+# define PIPEX_BONUS_H
 
 # include "./libft/libft.h"
 # include <errno.h>
@@ -39,6 +40,7 @@ typedef struct data_s
 	char	**cmd2;
 
 }			data_t;
+
 void ft_error(char *s);
 char		*read_path(char **env, char *av);
 void	child(char **env, char **av, data_t *o);
