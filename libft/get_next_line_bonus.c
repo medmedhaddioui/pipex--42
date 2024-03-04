@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: medmed <medmed@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mel-hadd <mel-hadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 15:19:34 by mel-hadd          #+#    #+#             */
-/*   Updated: 2024/03/02 16:17:36 by medmed           ###   ########.fr       */
+/*   Updated: 2024/02/28 20:44:05 by mel-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,9 @@ char	*get_next_line(int fd)
 	char		*line;
 	int			len;
 	char		*tmp;
+	char		*s1;
 
+	s1 = NULL;
 	if (fd < 0 || BUFFER_SIZE <= 0 || BUFFER_SIZE >= INT_MAX)
 		return (NULL);
 	buff[fd] = read_file(fd, buff[fd]);

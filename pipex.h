@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: medmed <medmed@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mel-hadd <mel-hadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 15:31:28 by mel-hadd          #+#    #+#             */
-/*   Updated: 2024/03/04 00:10:01 by medmed           ###   ########.fr       */
+/*   Updated: 2024/03/04 14:38:36 by mel-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,11 @@
 # include <unistd.h>
 #include <sys/wait.h>
 
+#define STDIN 0
+#define STDOUT 1
+#define INFILE 1
+#define OUTFILE 0
+
 typedef struct data_s
 {
 	int		fdi;
@@ -34,10 +39,9 @@ typedef struct data_s
 	char	**cmd2;
 
 }			data_t;
-
-void ft_error (char *s);
-char	*read_path(char **env, char *av);
-void child (char **env, char **av, int fd_1);
-void child_2(char **env, char **av, int fd_0);
-
+void ft_error(char *s);
+char		*read_path(char **env, char *av);
+void	child(char **env, char **av, data_t *o);
+void	child_2(char **env, char **av, data_t *o);
+void parent(char **env ,char **av , data_t *o);
 #endif

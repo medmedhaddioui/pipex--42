@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: medmed <medmed@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mel-hadd <mel-hadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 15:30:55 by mel-hadd          #+#    #+#             */
-/*   Updated: 2024/03/03 22:35:10 by medmed           ###   ########.fr       */
+/*   Updated: 2024/03/04 14:55:29 by mel-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,12 @@ int	file_open(const char *filename, int i)
 	if (i == 1)
 	{
 		if (access(filename,F_OK))
-		{
-			perror("error file");
-			exit(0);
-		}
+			ft_error("Error infile");
 		fd = open(filename, O_RDONLY, 0644);
 		return fd;
 	}
 	else
-		fd = open(filename, O_RDWR, 0644);
+		fd = open(filename, O_RDWR | O_CREAT | O_TRUNC , 0644);
 	return (fd);
 }
 char	*read_path(char **env, char *av)
@@ -53,57 +50,54 @@ char	*read_path(char **env, char *av)
 	}
 	return (arr[i]);
 }
-void	child(char **env, char **av, int fd_1)
+void parent(char **env ,char **av , data_t *o)
 {
-	data_t	o;
-
-	o.fdi = file_open(av[1], 1);
-	o.cmd = ft_split(av[2], ' ');
-	o.path = read_path(env, o.cmd[0]);
-	dup2(o.fdi, 0);
-	dup2(fd_1, 1);
-	close(fd_1);
-	if (execve(o.path, o.cmd, env) < 0)
-		ft_error("error in execve1");
+		wait(NULL);
+		o->pid2 = fork();
+		if (o->pid2 == -1)
+			ft_error("error fork_2");
+		if (o->pid2 == 0)
+			child_2(env, av, o);
+}
+void	child(char **env, char **av, data_t *o)
+{
+	close (o->fds[0]);
+	o->fdi = file_open(av[1], INFILE);
+	o->cmd = ft_split(av[2], ' ');
+	o->path = read_path(env, o->cmd[0]);
+	dup2(o->fdi, STDIN);
+	dup2(o->fds[1], STDOUT);
+	close(o->fds[1]);
+	if (execve(o->path, o->cmd, env) < 0)
+		ft_error("Error in execve1");
 }
 
-void	child_2(char **env, char **av, int fd_0)
+void	child_2(char **env, char **av, data_t *o)
 {
-	data_t	o;
-
-	o.fdo = file_open(av[4],0);
-	o.cmd2 = ft_split(av[3], ' ');
-	o.path = read_path(env, o.cmd2[0]);
-	dup2(fd_0, 0);
-	dup2(o.fdo, 1);
-	close(fd_0);
-	if (execve(o.path, o.cmd2, env) < 0)
-		ft_error("error in execve2");
+	close (o->fds[1]);
+	o->fdo = file_open(av[4],OUTFILE);
+	o->cmd2 = ft_split(av[3], ' ');
+	o->path = read_path(env, o->cmd2[0]);
+	dup2(o->fds[0], STDIN);
+	dup2(o->fdo, STDOUT);
+	close(o->fds[0]);
+	if (execve(o->path, o->cmd2, env) < 0)
+		ft_error("Error in execve2");
 }
 int	main(int ac, char **av, char **env)
 {
 	data_t	o;
 
-	if (ac == 1)
+	if (ac != 5)
 		return (0);
 	if (pipe(o.fds) == -1)
-		ft_error("error pipe");
+		ft_error("Error pipe");
 	o.pid = fork();
 	if (o.pid == -1)
-		ft_error("error pipe");
-	if (o.pid == 0)
-	{
-		close(o.fds[0]);
-		child(env, av, o.fds[1]);
-	}
+		ft_error("Error fork");
+	if (o.pid == 0)	
+		child(env, av, &o);
 	else
-	{
-		o.pid2 = fork();
-		if (o.pid2 == 0)
-		{
-			close(o.fds[1]);
-			child_2(env, av, o.fds[0]);
-		}
-	}
+		parent(env,av, &o);
 	return (0);
 }

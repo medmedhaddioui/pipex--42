@@ -10,7 +10,7 @@ all : $(NAME)
 
 $(NAME): $(SRC)
 	cd libft && $(MAKE)
-	cc  $(SRC) $(INCLUDES) -o $(NAME)
+	cc -Wall -Wextra -Werror $(SRC) $(INCLUDES) -o $(NAME)
 
 clean:
 	cd libft && rm -rf *.o
