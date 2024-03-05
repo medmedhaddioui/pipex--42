@@ -6,7 +6,7 @@
 /*   By: mel-hadd <mel-hadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 15:30:55 by mel-hadd          #+#    #+#             */
-/*   Updated: 2024/03/04 15:59:36 by mel-hadd         ###   ########.fr       */
+/*   Updated: 2024/03/05 11:55:52 by mel-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 
 void parent(char **env ,char **av , data_t *o)
 {
-		wait(NULL);
 		o->pid2 = fork();
 		if (o->pid2 == -1)
 			ft_error("error fork_2");
@@ -65,7 +64,8 @@ int	main(int ac, char **av, char **env)
 		ft_error("Error fork");
 	if (o.pid == 0)	
 		child(env, av, &o);
-	else
+	else 
 		parent(env,av, &o);
+	waitpid(o.pid,NULL,0);
 	return (0);
 }
