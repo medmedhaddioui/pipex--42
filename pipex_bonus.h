@@ -6,7 +6,7 @@
 /*   By: mel-hadd <mel-hadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 16:21:19 by mel-hadd          #+#    #+#             */
-/*   Updated: 2024/03/05 13:59:54 by mel-hadd         ###   ########.fr       */
+/*   Updated: 2024/03/06 19:34:23 by mel-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,9 @@
 
 typedef struct data_s
 {
+	int index_cmd ;
+	int flag;
+	int  argc;
 	int len;
 	int i;
 	int fds[2];
@@ -36,6 +39,7 @@ typedef struct data_s
 	int		fdo;
 	pid_t	pid;
 	pid_t pid2;
+	pid_t pid3;
 	char	*path;
 	char	**cmd;
 	char	**cmd2;
@@ -44,8 +48,10 @@ typedef struct data_s
 
 void ft_error(char *s);
 char		*read_path(char **env, char *av);
-void	child(char **env, char **av, data_b *o);
 int	file_open(const char *filename, int i);
-// void	child_2(char **env, char **av, data_b *o);
-// void parent(char **env ,char **av , data_b *o);
+void child_first(char **env, char **av, data_b *o);
+void child_middle(char **env, char **av, data_b *o);
+void child_last(char **env, char **av, data_b *o);
+void parent(char **env ,char **av , data_b *o);
+void child_n(char **env ,char **av , data_b *o);
 #endif

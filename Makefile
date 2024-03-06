@@ -1,14 +1,14 @@
 NAME = pipex
+
 NAME_BONUS = pipex_bonus
 
 SRC =	pipex.c pipex_utils.c
 
 SRC_BONUS =	pipex_bonus.c pipex_utils_bonus.c
 
-		
 OBJECT = $(SRC:.c=.o)
 
-OBJECT_BONUS = $(SRC:.c=.o)
+OBJECT_BONUS = $(SRC_BONUS:.c=.o)
 
 INCLUDES = libft/libft.a
 
