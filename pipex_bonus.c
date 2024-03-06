@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-hadd <mel-hadd@student.42.fr>          +#+  +:+       +#+        */
+/*   By: medmed <medmed@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 16:20:01 by mel-hadd          #+#    #+#             */
-/*   Updated: 2024/03/05 18:01:10 by mel-hadd         ###   ########.fr       */
+/*   Updated: 2024/03/05 23:42:55 by medmed           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,27 +14,11 @@
 
 void parent(char **env ,char **av , data_b *o)
 {
-	int pipe_fd[o->len][2];
-	while (o->i < o->len)
-	{
-		if (pipe(pipe_fd[o->i]) < 0)
-			perror("Error pipe");
-		o->i++;
-	}
-	o->i = 0;
-	// while (o->len < o->i)
-	// {
-	// 	o->pid = fork();
-	// 	if (o->pid == 0)
-	// 		child_n();
-	// 	else
-	// 		child_wr
-	// }
-		// o->pid2 = fork();
-		// if (o->pid2 == -1)
-		// 	ft_error("error fork_2");
-		// if (o->pid2 == 0)
-		// 	child_2(env, av, o);
+	o->pid2 = fork();
+	if (o->pid2 == -1)
+		ft_error("error fork_2");
+	if (o->pid2 == 0)
+		child_2(env, av, o);
 }
 // void close_files(int **pipe_fd)
 // {
@@ -54,10 +38,10 @@ void	child_first(char **env, char **av, data_b *o, int **pipe_fd)
 	if (execve(o->path, o->cmd, env) < 0)
 		ft_error("Error in execve1");
 }
-// void child_n(char *env, char *av, data_b *o)
-// {
+void child_n(char *env, char *av, data_b *o)
+{
 	
-// }
+}
 void	child_last(char **env, char **av, data_b *o)
 {
 	close (o->fds[1]);
@@ -80,13 +64,21 @@ int	main(int ac, char **av, char **env)
 		return (0);	
 	o.len = ac - 4;
 	o.i = 0;
-	if (pipe(o.fds) == -1)
-		ft_error("Error pipe");
-	o.pid = fork();
-	if (o.pid < 0)
-		perror("Error fork");
-	if (o.pid == 0)
-		child(env, av, &o);
-	parent(env,av, &o);
+	while (o.i < o.len)
+	{
+		if (pipe(o.fds[o.i]) < 0)
+			perror("Error pipe");
+		o.i++;
+	}
+	o.i = 0;
+	while (o.i < o.len)
+	{
+		o.pid = fork();
+		if (o.pid == 0)
+			child(env,av,&o);
+		else
+			parent(env,av, &o);
+		o.i++;
+	}
 	return (0);
 }
