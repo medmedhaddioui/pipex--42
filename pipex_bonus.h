@@ -6,7 +6,7 @@
 /*   By: mel-hadd <mel-hadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 16:21:19 by mel-hadd          #+#    #+#             */
-/*   Updated: 2024/03/06 19:34:23 by mel-hadd         ###   ########.fr       */
+/*   Updated: 2024/03/06 22:19:32 by mel-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,9 @@
 
 typedef struct data_s
 {
-	int index_cmd ;
-	int flag;
-	int  argc;
 	int len;
-	int i;
-	int fds[2];
+	int argc;
+	int pipes;
 	int		fdi;
 	int		fdo;
 	pid_t	pid;
@@ -43,7 +40,9 @@ typedef struct data_s
 	char	*path;
 	char	**cmd;
 	char	**cmd2;
-
+	int **arr;
+	int i;
+	int j;
 }			data_b;
 
 void ft_error(char *s);
@@ -53,5 +52,7 @@ void child_first(char **env, char **av, data_b *o);
 void child_middle(char **env, char **av, data_b *o);
 void child_last(char **env, char **av, data_b *o);
 void parent(char **env ,char **av , data_b *o);
-void child_n(char **env ,char **av , data_b *o);
+int  **creat_pipes(data_b *o);
+void close_pipes(data_b *o);
+
 #endif

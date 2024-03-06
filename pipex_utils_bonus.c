@@ -6,7 +6,7 @@
 /*   By: mel-hadd <mel-hadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 16:20:46 by mel-hadd          #+#    #+#             */
-/*   Updated: 2024/03/05 13:59:40 by mel-hadd         ###   ########.fr       */
+/*   Updated: 2024/03/06 22:10:41 by mel-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,45 @@ char	*read_path(char **env, char *av)
 	}
 	return (arr[i]);
 }
+void close_pipes(data_b *o)
+{
+	int i;
+	i = 0;
+	while (i < o->pipes)
+	{
+		close(o->arr[i][0]);
+		close(o->arr[i][1]);
+		i++;
+	}
+}
+int  **creat_pipes(data_b *o)
+{
+	int i;
+	i = 0;
+	int **arr;
+	arr = malloc (o->pipes * sizeof(int *));
+	if (!arr)
+		return NULL;
+	while (i < o->pipes)
+    {
+        arr[i] = malloc(2 * sizeof(int));
+        if (!arr[i])
+        {
+            while (i > 0)
+            {
+                free(arr[i]);
+				i--;
+			}
+            free(arr);
+            return NULL;
+        }
+		if (pipe(arr[i]) < 0)
+			perror("Error pipe");
+		i++;
+    }
+	return arr;
+}
+
 void	ft_error(char *s)
 {
 	perror(s);
