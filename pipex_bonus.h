@@ -6,7 +6,7 @@
 /*   By: mel-hadd <mel-hadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 16:21:19 by mel-hadd          #+#    #+#             */
-/*   Updated: 2024/03/06 22:19:32 by mel-hadd         ###   ########.fr       */
+/*   Updated: 2024/03/07 14:00:27 by mel-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ typedef struct data_s
 	char	*path;
 	char	**cmd;
 	char	**cmd2;
+	char **cmd3;
 	int **arr;
 	int i;
 	int j;
