@@ -6,7 +6,7 @@
 /*   By: mel-hadd <mel-hadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 16:20:01 by mel-hadd          #+#    #+#             */
-/*   Updated: 2024/03/07 14:10:03 by mel-hadd         ###   ########.fr       */
+/*   Updated: 2024/03/07 21:29:36 by mel-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,25 @@
 
 void parent(char **env ,char **av , data_b *o)
 {
-	o->i = 3;
 	o->len = o->argc - 3;
-	int x;
-	x = 1;
-	while (x < o->len)
+	o->x = 1;
+	while (o->x < o->len)
 	{
 		o->pid2 = fork();
 		if (o->pid2 == -1)
 			ft_error("error fork_2");
 		if (o->pid2 == 0)
 		{
-			if (x != o->argc - 4)
-				child_middle(env, av, o);
-			else if (x == o->argc - 4)
+			if (o->x == o->len - 1)
 				child_last(env, av, o);
+			else
+				child_middle(env, av, o);
 		}
-		else
-			x++;
+		o->index_cmd++;
+		o->x++;
+		o->i++;
 	}
+	close_pipes(o);
 }
 void	child_first(char **env, char **av, data_b *o)
 {
@@ -41,21 +41,22 @@ void	child_first(char **env, char **av, data_b *o)
 	o->path = read_path(env, o->cmd[0]);
 	if (dup2(o->fdi, STDIN) < 0)
 		ft_error("Error dup2");          
-	if (dup2(o->arr[o->j][1], STDOUT) < 0)
-		ft_error("Error dup2 in child_first");
+	if (dup2(o->arr[o->i][1], STDOUT) < 0)
+		ft_error("Error dup2 child_first");
 	close_pipes(o);
 	if (execve(o->path, o->cmd, env) < 0)
 		ft_error("Error in execve1");
 }
+
 void child_middle(char **env, char **av, data_b *o)
 {
-	o->cmd3 = ft_split(av[o->i++], ' ');
+	o->cmd3 = ft_split(av[o->index_cmd], ' ');
 	o->path = read_path(env, o->cmd3[0]);
-	if (dup2(o->arr[o->j][0],STDIN) < 0)
-		perror("Error dup2");
-	o->j++;
-	if (dup2(o->arr[o->j][1], STDOUT) < 0)
-		perror("Error dup2");
+	if (dup2(o->arr[o->i][0],STDIN) < 0)
+		perror("Error dup2 middle");
+	o->i++;
+	if (dup2(o->arr[o->i][1], STDOUT) < 0)
+		perror("Error dup2 middle");
 	close_pipes(o);
 	if (execve(o->path, o->cmd3, env) < 0)
 		ft_error("Error in execve3");
@@ -63,9 +64,9 @@ void child_middle(char **env, char **av, data_b *o)
 void	child_last(char **env, char **av, data_b *o)
 {
 	o->fdo = file_open(av[o-> argc - 1],OUTFILE);
-	o->cmd2 = ft_split(av[o->i], ' ');
+	o->cmd2 = ft_split(av[o->index_cmd], ' ');
 	o->path = read_path(env, o->cmd2[0]);
-	if (dup2(o->arr[o->j][0], STDIN) < 0)
+	if (dup2(o->arr[o->i][0], STDIN) < 0)
 		ft_error("Error dup2 child_last");
 	if (dup2(o->fdo, STDOUT) < 0)           
 		ft_error("Error dup2 child_last");
@@ -83,13 +84,13 @@ int	main(int ac, char **av, char **env)
 	o.argc = ac;
 	o.pipes = ac - 4;
 	o.arr = creat_pipes(&o);
-	o.j = 0;
+	o.i = 0;
+	o.index_cmd = 3;
 	o.pid = fork();
 	if (o.pid == 0)
 		child_first(env,av,&o);
-	else
-		parent(env,av,&o);
-	// while (wait(NULL) > 0)
-	// 	;
+	parent(env,av,&o);
+	while (wait(NULL) > 0)
+		;
 	return (0);
 }

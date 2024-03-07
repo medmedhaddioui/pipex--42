@@ -6,7 +6,7 @@
 /*   By: mel-hadd <mel-hadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 16:21:19 by mel-hadd          #+#    #+#             */
-/*   Updated: 2024/03/07 14:00:27 by mel-hadd         ###   ########.fr       */
+/*   Updated: 2024/03/07 21:25:51 by mel-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,18 +32,18 @@ typedef struct data_s
 	int len;
 	int argc;
 	int pipes;
+	int index_cmd;
+	int i;
+	int x;
 	int		fdi;
 	int		fdo;
 	pid_t	pid;
 	pid_t pid2;
-	pid_t pid3;
 	char	*path;
 	char	**cmd;
 	char	**cmd2;
 	char **cmd3;
 	int **arr;
-	int i;
-	int j;
 }			data_b;
 
 void ft_error(char *s);
