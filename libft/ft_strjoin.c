@@ -6,7 +6,7 @@
 /*   By: mel-hadd <mel-hadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 16:33:25 by mel-hadd          #+#    #+#             */
-/*   Updated: 2023/11/15 12:48:36 by mel-hadd         ###   ########.fr       */
+/*   Updated: 2024/03/09 14:28:35 by mel-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	int		total_len;
 	char	*new_str;
 
-	if (!s1 || !s2)
+	if (!s1 && !s2)
 		return (NULL);
 	len_s1 = ft_strlen(s1);
 	len_s2 = ft_strlen(s2);

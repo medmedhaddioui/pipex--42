@@ -6,7 +6,7 @@
 /*   By: mel-hadd <mel-hadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 16:08:09 by mel-hadd          #+#    #+#             */
-/*   Updated: 2024/03/04 15:59:52 by mel-hadd         ###   ########.fr       */
+/*   Updated: 2024/03/09 15:29:37 by mel-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,29 +28,45 @@ int	file_open(const char *filename, int i)
 	return (fd);
 }
 
-char	*read_path(char **env, char *av)
+char	*read_path(char **env, char *arg)
 {
 	char	**arr;
 	int		i;
+	char *path;
+	char *cmd;
 
 	i = 0;
-	if (av[0] == '/')
+	if (arg[0] == '/')
 		return (NULL);
-	if (access(av, F_OK) != -1)
-		return (av);
+	if (access(arg, F_OK | X_OK) != -1)
+		return (arg);
 	while (ft_strncmp(env[i], "PATH", 4) != 0)
 		i++;
 	arr = ft_split(env[i], ':');
 	i = 0;
 	arr[i] = ft_strchr(arr[i], '/');
-	av = ft_strjoin("/", av);
-	arr[i] = ft_strjoin(arr[i], av);
-	while (arr[i] != NULL && access(arr[i], F_OK) == -1)
-	{
+	cmd = ft_strjoin("/", arg);
+	path = ft_strjoin(arr[i], cmd);
+	while (path != NULL && access(path, F_OK | X_OK) == -1)
+	{		
 		i++;
-		arr[i] = ft_strjoin(arr[i], av);
+		free(path);
+		path = ft_strjoin(arr[i], cmd);
 	}
-	return (arr[i]);
+	free(cmd);
+	ft_free(arr);
+	return (path);
+}
+void ft_free(char **arr)
+{
+	int i;
+	i = 0;
+	while (arr[i])
+	{
+		free(arr[i]);
+		i++;
+	}
+	free(arr);
 }
 void	ft_error(char *s)
 {

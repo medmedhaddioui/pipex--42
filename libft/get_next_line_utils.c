@@ -6,7 +6,7 @@
 /*   By: mel-hadd <mel-hadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 14:27:29 by mel-hadd          #+#    #+#             */
-/*   Updated: 2024/02/28 20:45:36 by mel-hadd         ###   ########.fr       */
+/*   Updated: 2024/03/09 14:31:15 by mel-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ char	*ft_strjoin_2(char *s1, char const *s2)
 	int		total_len;
 	char	*new_str;
 
-	if (!s1 && !s2)
+	if (!s1 || !s2)
 		return (NULL);
 	if (!s1)
 		s1 = ft_strdup("");
