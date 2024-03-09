@@ -6,7 +6,7 @@
 /*   By: mel-hadd <mel-hadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 16:08:09 by mel-hadd          #+#    #+#             */
-/*   Updated: 2024/03/09 15:29:37 by mel-hadd         ###   ########.fr       */
+/*   Updated: 2024/03/09 18:52:39 by mel-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,33 +28,41 @@ int	file_open(const char *filename, int i)
 	return (fd);
 }
 
-char	*read_path(char **env, char *arg)
+char	*read_path(char **env, char *cmd)
 {
 	char	**arr;
 	int		i;
 	char *path;
-	char *cmd;
 
 	i = 0;
-	if (arg[0] == '/')
+	if (cmd[0] == '/')
 		return (NULL);
-	if (access(arg, F_OK | X_OK) != -1)
-		return (arg);
+	if (access(cmd, F_OK | X_OK) != -1)
+		return (cmd);
 	while (ft_strncmp(env[i], "PATH", 4) != 0)
 		i++;
 	arr = ft_split(env[i], ':');
+	path = find_path(arr, cmd);
+	return path;
+}
+char *find_path (char **arr, char *av)
+{
+	char *tmp;
+	int i;
+	char *cmd;
+	char *path;
+
+	tmp = arr[0];
 	i = 0;
-	arr[i] = ft_strchr(arr[i], '/');
-	cmd = ft_strjoin("/", arg);
+	
+	arr[i] = ft_strchr(tmp, '/');
+	cmd = ft_strjoin("/", av);
 	path = ft_strjoin(arr[i], cmd);
 	while (path != NULL && access(path, F_OK | X_OK) == -1)
 	{		
 		i++;
-		free(path);
 		path = ft_strjoin(arr[i], cmd);
 	}
-	free(cmd);
-	ft_free(arr);
 	return (path);
 }
 void ft_free(char **arr)

@@ -6,7 +6,7 @@
 /*   By: mel-hadd <mel-hadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 15:31:28 by mel-hadd          #+#    #+#             */
-/*   Updated: 2024/03/09 13:48:37 by mel-hadd         ###   ########.fr       */
+/*   Updated: 2024/03/09 18:51:35 by mel-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,12 @@ typedef struct data_s
 }			data_t;
 
 int	file_open(const char *filename, int i);
-char		*read_path(char **env, char *arg);
+char		*read_path(char **env, char *cmd);
 void	child(char **env, char **av, data_t *o);
 void	child_2(char **env, char **av, data_t *o);
 void parent(char **env ,char **av , data_t *o);
 void ft_error(char *s);
 void ft_free(char **arr);
+char *find_path (char **arr, char *av);
 
 #endif

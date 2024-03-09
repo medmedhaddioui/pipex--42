@@ -6,7 +6,7 @@
 /*   By: mel-hadd <mel-hadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 16:21:19 by mel-hadd          #+#    #+#             */
-/*   Updated: 2024/03/07 21:25:51 by mel-hadd         ###   ########.fr       */
+/*   Updated: 2024/03/09 18:55:12 by mel-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,5 +55,6 @@ void child_last(char **env, char **av, data_b *o);
 void parent(char **env ,char **av , data_b *o);
 int  **creat_pipes(data_b *o);
 void close_pipes(data_b *o);
+char *find_path (char **arr, char *av);
 
 #endif
