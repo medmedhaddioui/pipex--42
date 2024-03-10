@@ -6,7 +6,7 @@
 /*   By: mel-hadd <mel-hadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 16:20:01 by mel-hadd          #+#    #+#             */
-/*   Updated: 2024/03/07 21:29:36 by mel-hadd         ###   ########.fr       */
+/*   Updated: 2024/03/10 18:20:13 by mel-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,9 +79,14 @@ int	main(int ac, char **av, char **env)
 {
 	data_b	o;
 
-	if (ac < 3)
-		return (0);
+	// if (ac < 3)
+	// 	return (0);
 	o.argc = ac;
+	if (ft_strncmp(av[1],"here_doc",8) == 0)
+	{
+		here_doc(av, &o);
+		exit(0);
+	}
 	o.pipes = ac - 4;
 	o.arr = creat_pipes(&o);
 	o.i = 0;
@@ -94,3 +99,4 @@ int	main(int ac, char **av, char **env)
 		;
 	return (0);
 }
+// waitpid(pid, &status,0);

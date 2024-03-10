@@ -6,7 +6,7 @@
 /*   By: mel-hadd <mel-hadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 16:20:46 by mel-hadd          #+#    #+#             */
-/*   Updated: 2024/03/09 18:55:05 by mel-hadd         ###   ########.fr       */
+/*   Updated: 2024/03/10 16:38:49 by mel-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ char *find_path (char **arr, char *av)
 	}
 	return (path);
 }
+
 void close_pipes(data_b *o)
 {
 	int i;
@@ -77,6 +78,7 @@ void close_pipes(data_b *o)
 		i++;
 	}
 }
+
 int  **creat_pipes(data_b *o)
 {
 	int i;
@@ -103,10 +105,4 @@ int  **creat_pipes(data_b *o)
 		i++;
     }
 	return arr;
-}
-
-void	ft_error(char *s)
-{
-	perror(s);
-	exit(EXIT_FAILURE);
 }
