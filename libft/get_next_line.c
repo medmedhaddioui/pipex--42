@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-hadd <mel-hadd@student.42.fr>          +#+  +:+       +#+        */
+/*   By: medmed <medmed@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 14:27:19 by mel-hadd          #+#    #+#             */
-/*   Updated: 2024/03/10 18:15:23 by mel-hadd         ###   ########.fr       */
+/*   Updated: 2024/03/10 21:56:39 by medmed           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,7 @@ char	*get_next_line(int fd)
 	char		*line;
 	int			len;
 	char		*tmp;
-	char		*s1;
 
-	s1 = NULL;
 	if (fd < 0)
 	{
 		free(buff);

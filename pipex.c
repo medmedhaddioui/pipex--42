@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-hadd <mel-hadd@student.42.fr>          +#+  +:+       +#+        */
+/*   By: medmed <medmed@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 15:30:55 by mel-hadd          #+#    #+#             */
-/*   Updated: 2024/03/10 16:31:13 by mel-hadd         ###   ########.fr       */
+/*   Updated: 2024/03/11 20:25:48 by medmed           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,11 @@ void	child(char **env, char **av, data_t *o)
 	o->path = read_path(env, o->cmd[0]);
 	close(o->fds[1]);
 	if (execve(o->path, o->cmd, env) < 0)
+	{
+		free(o->path);
+		ft_free(o->cmd);
 		ft_error("Error in execve1");
+	}
 }
 
 void	child_2(char **env, char **av, data_t *o)
@@ -48,8 +52,10 @@ void	child_2(char **env, char **av, data_t *o)
 	o->cmd2 = ft_split(av[3], ' ');
 	o->path = read_path(env, o->cmd2[0]);
 	close(o->fds[0]);
-	if (execve(o->path, o->cmd2, env) < 0)
-		ft_error("Error in execve2");
+	execve(o->path, o->cmd2, env);
+	ft_free(o->cmd2);
+	free(o->path);
+	ft_error("Error in execve2");
 }
 int	main(int ac, char **av, char **env)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-hadd <mel-hadd@student.42.fr>          +#+  +:+       +#+        */
+/*   By: medmed <medmed@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 16:08:09 by mel-hadd          #+#    #+#             */
-/*   Updated: 2024/03/10 14:09:48 by mel-hadd         ###   ########.fr       */
+/*   Updated: 2024/03/11 19:14:06 by medmed           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,29 +41,28 @@ char	*read_path(char **env, char *cmd)
 		return (cmd);
 	while (ft_strncmp(env[i], "PATH", 4) != 0)
 		i++;
-	arr = ft_split(env[i], ':');
+	arr = ft_split(ft_strchr(env[i],'/'), ':');
 	path = find_path(arr, cmd);
+	ft_free(arr);
 	return path;
 }
 
-char *find_path (char **arr, char *av)
+char *find_path (char **arr, char *cmd)
 {
-	char *tmp;
 	int i;
-	char *cmd;
 	char *path;
 
-	tmp = arr[0];
 	i = 0;
 	
-	arr[i] = ft_strchr(tmp, '/');
-	cmd = ft_strjoin("/", av);
+	cmd = ft_strjoin("/", cmd);
 	path = ft_strjoin(arr[i], cmd);
 	while (path != NULL && access(path, F_OK | X_OK) == -1)
-	{		
+	{
+		free(path);		
 		i++;
 		path = ft_strjoin(arr[i], cmd);
 	}
+	free(cmd);
 	return (path);
 }
 
