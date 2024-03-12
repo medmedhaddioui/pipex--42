@@ -6,7 +6,7 @@
 /*   By: medmed <medmed@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 15:30:55 by mel-hadd          #+#    #+#             */
-/*   Updated: 2024/03/11 20:25:48 by medmed           ###   ########.fr       */
+/*   Updated: 2024/03/11 21:37:01 by medmed           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,14 +31,10 @@ void	child(char **env, char **av, data_t *o)
 	if (dup2(o->fds[1], STDOUT) < 0)
 		ft_error("Error dup2");
 	o->cmd = ft_split(av[2], ' ');
-	o->path = read_path(env, o->cmd[0]);
 	close(o->fds[1]);
-	if (execve(o->path, o->cmd, env) < 0)
-	{
-		free(o->path);
-		ft_free(o->cmd);
-		ft_error("Error in execve1");
-	}
+	execve(read_path(env, o->cmd[0]), o->cmd, env);
+	ft_free(o->cmd);
+	ft_error("Error in execve1");
 }
 
 void	child_2(char **env, char **av, data_t *o)
@@ -50,11 +46,9 @@ void	child_2(char **env, char **av, data_t *o)
 	if (dup2(o->fdo, STDOUT) < 0)
 		ft_error("Error dup2");
 	o->cmd2 = ft_split(av[3], ' ');
-	o->path = read_path(env, o->cmd2[0]);
 	close(o->fds[0]);
-	execve(o->path, o->cmd2, env);
+	execve(read_path(env, o->cmd2[0]), o->cmd2, env);
 	ft_free(o->cmd2);
-	free(o->path);
 	ft_error("Error in execve2");
 }
 int	main(int ac, char **av, char **env)
@@ -62,7 +56,7 @@ int	main(int ac, char **av, char **env)
 	data_t	o;
 
 	if (ac != 5)
-		return (0);
+		exit(1);
 	if (pipe(o.fds) == -1)
 		ft_error("Error pipe");
 	o.pid = fork();
@@ -70,8 +64,7 @@ int	main(int ac, char **av, char **env)
 		ft_error("Error fork");
 	if (o.pid == 0)
 		child(env, av, &o);
-	else
-		parent(env,av, &o);
+	parent(env,av, &o);
 	while (wait(NULL) < 0)
 		;
 	return (0);

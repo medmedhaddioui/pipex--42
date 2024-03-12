@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-hadd <mel-hadd@student.42.fr>          +#+  +:+       +#+        */
+/*   By: medmed <medmed@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 16:21:19 by mel-hadd          #+#    #+#             */
-/*   Updated: 2024/03/10 18:55:21 by mel-hadd         ###   ########.fr       */
+/*   Updated: 2024/03/11 22:08:44 by medmed           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ typedef struct data_s
 	int argc;
 	int pipes;
 	int index_cmd;
+	int		fds[2];
 	int i;
 	int x;
 	int		fdi;
@@ -49,14 +50,15 @@ typedef struct data_s
 void ft_error(char *s);
 char		*read_path(char **env, char *av);
 int	file_open(const char *filename, int i);
-void child_first(char **env, char **av, data_b *o);
-void child_middle(char **env, char **av, data_b *o);
-void child_last(char **env, char **av, data_b *o);
+void first_child(char **env, char **av, data_b *o);
+void n_child(char **env, char **av, data_b *o);
+void last_child(char **env, char **av, data_b *o);
 void parent(char **env ,char **av , data_b *o);
 int  **creat_pipes(data_b *o);
 void close_pipes(data_b *o);
 char *find_path (char **arr, char *av);
-void here_doc (char **av, data_b *o);
+void here_doc (char **env, char **av, data_b *o);
 int ft_strcmp(char *s1, char *s2);
+void ft_free(char **arr);
 
 #endif

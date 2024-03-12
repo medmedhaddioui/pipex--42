@@ -17,16 +17,26 @@ int ft_strcmp(char *s1, char *s2)
 		return 0;
 	return (s1[i] - s2[i]);
 }
-void here_doc (char **av, data_b *o)
+void here_doc (char **env, char **av, data_b *o)
 {
-	(void ) o;
-	char *str;
-	str  = get_next_line(0);
-	while (ft_strcmp(str, av[2]) != 0)
+	char *s;
+	if  (pipe(o->fds) < 0)
+		ft_error("error pipe");
+	s = get_next_line(0);
+	while (ft_strcmp(s, av[2]) != 0)
 	{
-		free(str);
 		str = get_next_line(0);
 	}
 	free(str);
 }
-alig	
+void ft_free(char **arr)
+{
+	int i;
+	i = 0;
+	while (arr[i])
+	{
+		free(arr[i]);
+		i++;
+	}
+	free(arr);
+}

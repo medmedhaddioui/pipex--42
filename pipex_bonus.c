@@ -6,7 +6,7 @@
 /*   By: medmed <medmed@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 16:20:01 by mel-hadd          #+#    #+#             */
-/*   Updated: 2024/03/11 20:10:10 by medmed           ###   ########.fr       */
+/*   Updated: 2024/03/11 21:42:43 by medmed           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,9 @@ void parent(char **env ,char **av , data_b *o)
 		if (o->pid2 == 0)
 		{
 			if (o->x == o->len - 1)
-				child_last(env, av, o);
+				last_child(env, av, o);
 			else
-				child_middle(env, av, o);
+				n_child(env, av, o);
 		}
 		o->index_cmd++;
 		o->x++;
@@ -48,7 +48,7 @@ void	child_first(char **env, char **av, data_b *o)
 		ft_error("Error in execve1");
 }
 
-void child_middle(char **env, char **av, data_b *o)
+void n_child(char **env, char **av, data_b *o)
 {
 	if (dup2(o->arr[o->i][0],STDIN) < 0)
 		perror("Error dup2 middle");
@@ -61,7 +61,7 @@ void child_middle(char **env, char **av, data_b *o)
 	if (execve(o->path, o->cmd3, env) < 0)
 		ft_error("Error in execve3");
 }
-void	child_last(char **env, char **av, data_b *o)
+void	last_child(char **env, char **av, data_b *o)
 {
 	o->fdo = file_open(av[o-> argc - 1],OUTFILE);
 	if (dup2(o->arr[o->i][0], STDIN) < 0)
@@ -84,7 +84,7 @@ int	main(int ac, char **av, char **env)
 	o.argc = ac;
 	if (ft_strncmp(av[1],"here_doc",8) == 0)
 	{
-		here_doc(av, &o);
+		here_doc(env, av, &o);
 		exit(0);
 	}
 	o.pipes = ac - 4;
@@ -93,7 +93,7 @@ int	main(int ac, char **av, char **env)
 	o.index_cmd = 3;
 	o.pid = fork();
 	if (o.pid == 0)
-		child_first(env,av,&o);
+		first_child(env,av,&o);
 	parent(env,av,&o);
 	while (wait(NULL) > 0)
 		;
