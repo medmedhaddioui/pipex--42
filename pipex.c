@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: medmed <medmed@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mel-hadd <mel-hadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 15:30:55 by mel-hadd          #+#    #+#             */
-/*   Updated: 2024/03/11 21:37:01 by medmed           ###   ########.fr       */
+/*   Updated: 2024/03/12 15:35:23 by mel-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void parent(char **env ,char **av , data_t *o)
+void	parent(char **env, char **av, t_data *o)
 {
 	o->pid2 = fork();
 	if (o->pid2 == -1)
@@ -22,9 +22,10 @@ void parent(char **env ,char **av , data_t *o)
 	close(o->fds[1]);
 	close(o->fds[0]);
 }
-void	child(char **env, char **av, data_t *o)
+
+void	child(char **env, char **av, t_data *o)
 {
-	close (o->fds[0]);
+	close(o->fds[0]);
 	o->fdi = file_open(av[1], INFILE);
 	if (dup2(o->fdi, STDIN) < 0)
 		ft_error("Error dup2");
@@ -37,10 +38,10 @@ void	child(char **env, char **av, data_t *o)
 	ft_error("Error in execve1");
 }
 
-void	child_2(char **env, char **av, data_t *o)
+void	child_2(char **env, char **av, t_data *o)
 {
-	close (o->fds[1]);
-	o->fdo = file_open(av[4],OUTFILE);
+	close(o->fds[1]);
+	o->fdo = file_open(av[4], OUTFILE);
 	if (dup2(o->fds[0], STDIN) < 0)
 		ft_error("Error dup2");
 	if (dup2(o->fdo, STDOUT) < 0)
@@ -51,9 +52,10 @@ void	child_2(char **env, char **av, data_t *o)
 	ft_free(o->cmd2);
 	ft_error("Error in execve2");
 }
+
 int	main(int ac, char **av, char **env)
 {
-	data_t	o;
+	t_data	o;
 
 	if (ac != 5)
 		exit(1);
@@ -64,7 +66,7 @@ int	main(int ac, char **av, char **env)
 		ft_error("Error fork");
 	if (o.pid == 0)
 		child(env, av, &o);
-	parent(env,av, &o);
+	parent(env, av, &o);
 	while (wait(NULL) < 0)
 		;
 	return (0);

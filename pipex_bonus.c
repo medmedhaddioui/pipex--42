@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: medmed <medmed@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mel-hadd <mel-hadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 16:20:01 by mel-hadd          #+#    #+#             */
-/*   Updated: 2024/03/11 21:42:43 by medmed           ###   ########.fr       */
+/*   Updated: 2024/03/12 15:37:08 by mel-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
 
-void parent(char **env ,char **av , data_b *o)
+void	parent(char **env, char **av, t_data *o)
 {
 	o->len = o->argc - 3;
 	o->x = 1;
@@ -34,11 +34,12 @@ void parent(char **env ,char **av , data_b *o)
 	}
 	close_pipes(o);
 }
-void	child_first(char **env, char **av, data_b *o)
+
+void	first_child(char **env, char **av, t_data *o)
 {
 	o->fdi = file_open(av[1], INFILE);
 	if (dup2(o->fdi, STDIN) < 0)
-		ft_error("Error dup2");          
+		ft_error("Error dup2");
 	if (dup2(o->arr[o->i][1], STDOUT) < 0)
 		ft_error("Error dup2 child_first");
 	close_pipes(o);
@@ -48,9 +49,9 @@ void	child_first(char **env, char **av, data_b *o)
 		ft_error("Error in execve1");
 }
 
-void n_child(char **env, char **av, data_b *o)
+void	n_child(char **env, char **av, t_data *o)
 {
-	if (dup2(o->arr[o->i][0],STDIN) < 0)
+	if (dup2(o->arr[o->i][0], STDIN) < 0)
 		perror("Error dup2 middle");
 	o->i++;
 	if (dup2(o->arr[o->i][1], STDOUT) < 0)
@@ -61,12 +62,13 @@ void n_child(char **env, char **av, data_b *o)
 	if (execve(o->path, o->cmd3, env) < 0)
 		ft_error("Error in execve3");
 }
-void	last_child(char **env, char **av, data_b *o)
+
+void	last_child(char **env, char **av, t_data *o)
 {
-	o->fdo = file_open(av[o-> argc - 1],OUTFILE);
+	o->fdo = file_open(av[o->argc - 1], OUTFILE);
 	if (dup2(o->arr[o->i][0], STDIN) < 0)
 		ft_error("Error dup2 child_last");
-	if (dup2(o->fdo, STDOUT) < 0)           
+	if (dup2(o->fdo, STDOUT) < 0)
 		ft_error("Error dup2 child_last");
 	close_pipes(o);
 	o->cmd2 = ft_split(av[o->index_cmd], ' ');
@@ -77,26 +79,25 @@ void	last_child(char **env, char **av, data_b *o)
 
 int	main(int ac, char **av, char **env)
 {
-	data_b	o;
+	t_data	o;
 
-	// if (ac < 3)
-	// 	return (0);
 	o.argc = ac;
-	if (ft_strncmp(av[1],"here_doc",8) == 0)
-	{
-		here_doc(env, av, &o);
-		exit(0);
-	}
 	o.pipes = ac - 4;
 	o.arr = creat_pipes(&o);
 	o.i = 0;
 	o.index_cmd = 3;
+	if (ft_strncmp(av[1], "here_doc", 8) == 0)
+	{
+		here_doc(env, av, &o);
+		exit(0);
+	}
 	o.pid = fork();
 	if (o.pid == 0)
-		first_child(env,av,&o);
-	parent(env,av,&o);
+		first_child(env, av, &o);
+	parent(env, av, &o);
 	while (wait(NULL) > 0)
 		;
 	return (0);
 }
+
 // waitpid(pid, &status,0);

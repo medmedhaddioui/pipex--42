@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: medmed <medmed@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mel-hadd <mel-hadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 16:08:09 by mel-hadd          #+#    #+#             */
-/*   Updated: 2024/03/11 19:14:06 by medmed           ###   ########.fr       */
+/*   Updated: 2024/03/12 15:37:21 by mel-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,33 +32,32 @@ char	*read_path(char **env, char *cmd)
 {
 	char	**arr;
 	int		i;
-	char *path;
+	char	*path;
 
 	i = 0;
-	if (cmd[0] == '/')
-		return (NULL);
 	if (access(cmd, F_OK | X_OK) != -1)
 		return (cmd);
+	if (cmd[0] == '/')
+		return (NULL);
 	while (ft_strncmp(env[i], "PATH", 4) != 0)
 		i++;
-	arr = ft_split(ft_strchr(env[i],'/'), ':');
+	arr = ft_split(ft_strchr(env[i], '/'), ':');
 	path = find_path(arr, cmd);
 	ft_free(arr);
-	return path;
+	return (path);
 }
 
-char *find_path (char **arr, char *cmd)
+char	*find_path(char **arr, char *cmd)
 {
-	int i;
-	char *path;
+	int		i;
+	char	*path;
 
 	i = 0;
-	
 	cmd = ft_strjoin("/", cmd);
 	path = ft_strjoin(arr[i], cmd);
 	while (path != NULL && access(path, F_OK | X_OK) == -1)
 	{
-		free(path);		
+		free(path);
 		i++;
 		path = ft_strjoin(arr[i], cmd);
 	}
@@ -66,9 +65,10 @@ char *find_path (char **arr, char *cmd)
 	return (path);
 }
 
-void ft_free(char **arr)
+void	ft_free(char **arr)
 {
-	int i;
+	int	i;
+
 	i = 0;
 	while (arr[i])
 	{
@@ -77,6 +77,7 @@ void ft_free(char **arr)
 	}
 	free(arr);
 }
+
 void	ft_error(char *s)
 {
 	perror(s);

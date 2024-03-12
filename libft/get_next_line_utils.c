@@ -6,56 +6,11 @@
 /*   By: mel-hadd <mel-hadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 14:27:29 by mel-hadd          #+#    #+#             */
-/*   Updated: 2024/03/10 18:15:04 by mel-hadd         ###   ########.fr       */
+/*   Updated: 2024/03/12 15:31:13 by mel-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
-void	*ft_memcpy(void *dest, const void *src, size_t n)
-{
-	size_t			i;
-	unsigned char	*dst;
-
-	if (!dest && !src)
-		return (NULL);
-	if (dest == src)
-		return (dest);
-	i = 0;
-	dst = (unsigned char *)dest;
-	while (i < n)
-	{
-		*dst = *(unsigned char *)src;
-		i++;
-		dst++;
-		src++;
-	}
-	return (dest);
-}
-
-size_t	ft_strlen(const char *str)
-{
-	size_t	i;
-
-	i = 0;
-	while (str[i] != '\0')
-		i++;
-	return (i);
-}
-
-char	*ft_strdup(const char *s)
-{
-	size_t	len;
-	char	*tab;
-
-	len = ft_strlen(s);
-	tab = (char *)malloc((len + 1) * sizeof(char));
-	if (!tab)
-		return (NULL);
-	ft_memcpy(tab, s, len);
-	tab[len] = '\0';
-	return (tab);
-}
 
 char	*ft_strjoin_2(char *s1, char const *s2)
 {
@@ -79,32 +34,4 @@ char	*ft_strjoin_2(char *s1, char const *s2)
 	new_str[total_len] = '\0';
 	free(s1);
 	return (new_str);
-}
-
-char	*ft_substr(char const *s, unsigned int start, size_t len)
-{
-	size_t	i;
-	char	*ptr;
-
-	i = 0;
-	if (!s)
-		return (NULL);
-	if (start >= ft_strlen(s))
-	{
-		ptr = ft_strdup("");
-		return (ptr);
-	}
-	else if (len > ft_strlen(s + start))
-		len = ft_strlen(s + start);
-	ptr = (char *)malloc((len + 1) * sizeof(char));
-	if (ptr == NULL)
-		return (NULL);
-	while (len && s[start + i] != '\0')
-	{
-		ptr[i] = (char)s[start + i];
-		len--;
-		i++;
-	}
-	ptr[i] = '\0';
-	return (ptr);
 }
