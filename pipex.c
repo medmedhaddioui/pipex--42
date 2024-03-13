@@ -21,6 +21,7 @@ void	parent(char **env, char **av, t_data *o)
 		child_2(env, av, o);
 	close(o->fds[1]);
 	close(o->fds[0]);
+	wait(NULL);
 }
 
 void	child(char **env, char **av, t_data *o)
@@ -33,9 +34,11 @@ void	child(char **env, char **av, t_data *o)
 		ft_error("Error dup2");
 	o->cmd = ft_split(av[2], ' ');
 	close(o->fds[1]);
-	execve(read_path(env, o->cmd[0]), o->cmd, env);
-	ft_free(o->cmd);
-	ft_error("Error in execve1");
+	if (execve(read_path(env, o->cmd[0]), o->cmd, env) < 0)
+	{
+		ft_free(o->cmd);
+		ft_error("Error in execve1");
+	}
 }
 
 void	child_2(char **env, char **av, t_data *o)
@@ -48,9 +51,11 @@ void	child_2(char **env, char **av, t_data *o)
 		ft_error("Error dup2");
 	o->cmd2 = ft_split(av[3], ' ');
 	close(o->fds[0]);
-	execve(read_path(env, o->cmd2[0]), o->cmd2, env);
-	ft_free(o->cmd2);
-	ft_error("Error in execve2");
+	if (execve(read_path(env, o->cmd2[0]), o->cmd2, env) < 0)
+	{
+		ft_free(o->cmd2);
+		ft_error("Error in execve2");
+	}
 }
 
 int	main(int ac, char **av, char **env)
@@ -67,7 +72,6 @@ int	main(int ac, char **av, char **env)
 	if (o.pid == 0)
 		child(env, av, &o);
 	parent(env, av, &o);
-	while (wait(NULL) < 0)
-		;
+	wait(NULL);
 	return (0);
 }

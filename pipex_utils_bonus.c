@@ -74,8 +74,10 @@ void	close_pipes(t_data *o)
 	{
 		close(o->arr[i][0]);
 		close(o->arr[i][1]);
+		free(o->arr[i]);
 		i++;
 	}
+	free(o->arr);
 }
 
 int	**creat_pipes(t_data *o)

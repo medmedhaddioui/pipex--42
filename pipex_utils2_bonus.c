@@ -42,8 +42,10 @@ void	here_doc(char **env, char **av, t_data *o)
 		while (ft_strcmp(o->s, av[2]) != 0)
 		{
 			ft_putstr_fd(o->s, 1);
+			free(o->s);
 			o->s = get_next_line(0);
 		}
+		free(o->s);
 		close_pipes(o);
 		exit(0);
 	}

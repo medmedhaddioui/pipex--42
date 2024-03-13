@@ -33,6 +33,7 @@ void	parent(char **env, char **av, t_data *o)
 		o->i++;
 	}
 	close_pipes(o);
+	while (wait(NULL) > 0);
 }
 
 void	first_child(char **env, char **av, t_data *o)
@@ -44,9 +45,11 @@ void	first_child(char **env, char **av, t_data *o)
 		ft_error("Error dup2 child_first");
 	close_pipes(o);
 	o->cmd = ft_split(av[2], ' ');
-	o->path = read_path(env, o->cmd[0]);
-	if (execve(o->path, o->cmd, env) < 0)
+	if (execve(read_path(env, o->cmd[0]), o->cmd, env) < 0)
+	{
+		ft_free(o->cmd);
 		ft_error("Error in execve1");
+	}
 }
 
 void	n_child(char **env, char **av, t_data *o)
@@ -58,9 +61,11 @@ void	n_child(char **env, char **av, t_data *o)
 		perror("Error dup2 middle");
 	close_pipes(o);
 	o->cmd3 = ft_split(av[o->index_cmd], ' ');
-	o->path = read_path(env, o->cmd3[0]);
-	if (execve(o->path, o->cmd3, env) < 0)
+	if (execve(read_path(env, o->cmd3[0]), o->cmd3, env) < 0)
+	{
+		ft_free(o->cmd3);
 		ft_error("Error in execve3");
+	}
 }
 
 void	last_child(char **env, char **av, t_data *o)
@@ -72,15 +77,19 @@ void	last_child(char **env, char **av, t_data *o)
 		ft_error("Error dup2 child_last");
 	close_pipes(o);
 	o->cmd2 = ft_split(av[o->index_cmd], ' ');
-	o->path = read_path(env, o->cmd2[0]);
-	if (execve(o->path, o->cmd2, env) < 0)
+	if (execve(read_path(env, o->cmd2[0]), o->cmd2, env) < 0)
+	{
+		ft_free(o->cmd2);
 		ft_error("Error in execve2");
+	}
 }
 
 int	main(int ac, char **av, char **env)
 {
 	t_data	o;
 
+	if (ac < 3)
+		return 0;
 	o.argc = ac;
 	o.pipes = ac - 4;
 	o.arr = creat_pipes(&o);
