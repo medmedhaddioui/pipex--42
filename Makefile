@@ -11,22 +11,20 @@ OBJECT = $(SRC:.c=.o)
 OBJECT_BONUS = $(SRC_BONUS:.c=.o)
 
 CC = cc
-
 CFLAGS = -Wall -Wextra -Werror -fsanitize=address
-
-INCLUDES = libft/libft.a
+LIBFT_A = libft/libft.a
 
 all : $(NAME)
 
 $(NAME): $(SRC)
 	cd libft && $(MAKE)
-	$(CC) $(CFLAGS) $(SRC) $(INCLUDES) -o $(NAME)
+	$(CC) $(CFLAGS) $(SRC) $(LIBFT_A) -o $(NAME)
 
 bonus : $(NAME_BONUS)
 
 $(NAME_BONUS) : $(SRC_BONUS)
 	cd libft && $(MAKE)
-	$(CC) $(CFLAGS) $(SRC_BONUS) $(INCLUDES) -o $(NAME_BONUS)
+	$(CC) $(CFLAGS) $(SRC_BONUS) $(LIBFT_A) -o $(NAME_BONUS)
 
 clean:
 	cd libft && rm -rf *.o
