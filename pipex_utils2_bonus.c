@@ -6,7 +6,7 @@
 /*   By: mel-hadd <mel-hadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:33:38 by mel-hadd          #+#    #+#             */
-/*   Updated: 2024/03/15 00:36:48 by mel-hadd         ###   ########.fr       */
+/*   Updated: 2024/03/15 17:16:32 by mel-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	ft_exit(void)
 {
 	write(2, "command not found:\n", 19);
-	exit(1);
+	exit(EXIT_FAILURE);
 }
 
 void	ft_error(char *s)
@@ -29,6 +29,7 @@ int	ft_strcmp(char *s1, char *s2)
 	size_t	i;
 
 	i = 0;
+
 	while (s1[i] == s2[i] && s1[i] != '\0' && s2[i] != '\0')
 		i++;
 	if (s1[i] == '\n' && s2[i] == '\0')
@@ -52,7 +53,7 @@ void	here_doc(char **env, char **av, t_data *o)
 		}
 		free(o->s);
 		close_pipes(o);
-		exit(0);
+		exit(EXIT_SUCCESS);
 	}
 	parent(env, av, o);
 	while (wait(NULL) > 0)

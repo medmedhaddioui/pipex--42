@@ -6,7 +6,7 @@
 /*   By: mel-hadd <mel-hadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 16:08:09 by mel-hadd          #+#    #+#             */
-/*   Updated: 2024/03/15 00:36:25 by mel-hadd         ###   ########.fr       */
+/*   Updated: 2024/03/15 17:15:46 by mel-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	ft_exit(void)
 {
 	write(2, "command not found:\n", 19);
-	exit(1);
+	exit(EXIT_FAILURE);
 }
 
 char	*read_path(char **env, char *cmd)

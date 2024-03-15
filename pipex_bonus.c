@@ -6,7 +6,7 @@
 /*   By: mel-hadd <mel-hadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 16:20:01 by mel-hadd          #+#    #+#             */
-/*   Updated: 2024/03/15 00:37:06 by mel-hadd         ###   ########.fr       */
+/*   Updated: 2024/03/15 16:54:48 by mel-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,7 @@ void	last_child(char **env, char **av, t_data *o)
 int	main(int ac, char **av, char **env)
 {
 	t_data	o;
-
-	if (ac < 3)
+	if (ac < 5)
 		return (0);
 	o.argc = ac;
 	o.pipes = ac - 4;
