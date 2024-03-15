@@ -6,26 +6,16 @@
 /*   By: mel-hadd <mel-hadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 16:08:09 by mel-hadd          #+#    #+#             */
-/*   Updated: 2024/03/12 15:37:21 by mel-hadd         ###   ########.fr       */
+/*   Updated: 2024/03/15 00:36:25 by mel-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-int	file_open(const char *filename, int i)
+void	ft_exit(void)
 {
-	int	fd;
-
-	if (i == 1)
-	{
-		if (access(filename, F_OK))
-			ft_error("Error infile");
-		fd = open(filename, O_RDONLY, 0644);
-		return (fd);
-	}
-	else
-		fd = open(filename, O_RDWR | O_CREAT | O_TRUNC, 0644);
-	return (fd);
+	write(2, "command not found:\n", 19);
+	exit(1);
 }
 
 char	*read_path(char **env, char *cmd)
@@ -35,12 +25,16 @@ char	*read_path(char **env, char *cmd)
 	char	*path;
 
 	i = 0;
+	if (cmd[i] == '\0')
+		return (NULL);
 	if (access(cmd, F_OK | X_OK) != -1)
 		return (cmd);
-	if (cmd[0] == '/')
+	if (cmd[0] == '/' || cmd[0] == '.')
 		return (NULL);
-	while (ft_strncmp(env[i], "PATH", 4) != 0)
+	while (env[i] != NULL && ft_strncmp(env[i], "PATH", 4) != 0)
 		i++;
+	if (env[i] == NULL)
+		return (NULL);
 	arr = ft_split(ft_strchr(env[i], '/'), ':');
 	path = find_path(arr, cmd);
 	ft_free(arr);

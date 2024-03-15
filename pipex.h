@@ -6,7 +6,7 @@
 /*   By: mel-hadd <mel-hadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 15:31:28 by mel-hadd          #+#    #+#             */
-/*   Updated: 2024/03/12 15:36:14 by mel-hadd         ###   ########.fr       */
+/*   Updated: 2024/03/15 00:37:25 by mel-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,5 +48,6 @@ void		parent(char **env, char **av, t_data *o);
 void		ft_error(char *s);
 void		ft_free(char **arr);
 char		*find_path(char **arr, char *av);
+void		ft_exit(void);
 
 #endif

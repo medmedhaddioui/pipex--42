@@ -6,7 +6,7 @@
 /*   By: mel-hadd <mel-hadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 16:20:46 by mel-hadd          #+#    #+#             */
-/*   Updated: 2024/03/12 15:37:39 by mel-hadd         ###   ########.fr       */
+/*   Updated: 2024/03/15 00:36:30 by mel-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,17 @@ int	file_open(const char *filename, int i)
 {
 	int	fd;
 
-	if (i == 1)
+	if (i == 0)
 	{
 		if (access(filename, F_OK))
 			ft_error("Error infile");
 		fd = open(filename, O_RDONLY, 0644);
 		return (fd);
 	}
-	else
+	else if (i == 1)
 		fd = open(filename, O_RDWR | O_CREAT | O_TRUNC, 0644);
+	else
+		fd = open(filename, O_RDWR | O_CREAT | O_APPEND, 0644);
 	return (fd);
 }
 
@@ -37,10 +39,12 @@ char	*read_path(char **env, char *cmd)
 	i = 0;
 	if (access(cmd, F_OK | X_OK) != -1)
 		return (cmd);
-	if (cmd[0] == '/')
+	if (cmd[0] == '/' || cmd[0] == '.')
 		return (NULL);
-	while (ft_strncmp(env[i], "PATH", 4) != 0)
+	while (env[i] != NULL && ft_strncmp(env[i], "PATH", 4) != 0)
 		i++;
+	if (env[i] == NULL)
+		return (NULL);
 	arr = ft_split(ft_strchr(env[i], '/'), ':');
 	path = find_path(arr, cmd);
 	ft_free(arr);

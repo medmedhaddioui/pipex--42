@@ -6,7 +6,7 @@
 /*   By: mel-hadd <mel-hadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 16:21:19 by mel-hadd          #+#    #+#             */
-/*   Updated: 2024/03/12 15:36:08 by mel-hadd         ###   ########.fr       */
+/*   Updated: 2024/03/15 00:37:28 by mel-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,9 @@
 
 # define STDIN 0
 # define STDOUT 1
-# define INFILE 1
-# define OUTFILE 0
+# define INFILE 0
+# define OUTFILE 1
+# define HERE_DOC_FILE 2
 
 typedef struct b_data
 {
@@ -45,7 +46,7 @@ typedef struct b_data
 	char	**cmd3;
 	int		**arr;
 	char	*s;
-
+	int		here_doc;
 }			t_data;
 
 void		ft_error(char *s);
@@ -61,5 +62,6 @@ char		*find_path(char **arr, char *av);
 void		here_doc(char **env, char **av, t_data *o);
 int			ft_strcmp(char *s1, char *s2);
 void		ft_free(char **arr);
+void		ft_exit(void);
 
 #endif

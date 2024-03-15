@@ -6,11 +6,27 @@
 /*   By: mel-hadd <mel-hadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 15:30:55 by mel-hadd          #+#    #+#             */
-/*   Updated: 2024/03/12 15:35:23 by mel-hadd         ###   ########.fr       */
+/*   Updated: 2024/03/15 00:37:19 by mel-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
+int	file_open(const char *filename, int i)
+{
+	int	fd;
+
+	if (i == 1)
+	{
+		if (access(filename, F_OK))
+			ft_error("Error infile");
+		fd = open(filename, O_RDONLY, 0644);
+		return (fd);
+	}
+	else
+		fd = open(filename, O_RDWR | O_CREAT | O_TRUNC, 0644);
+	return (fd);
+}
 
 void	parent(char **env, char **av, t_data *o)
 {
@@ -34,6 +50,8 @@ void	child(char **env, char **av, t_data *o)
 		ft_error("Error dup2");
 	o->cmd = ft_split(av[2], ' ');
 	close(o->fds[1]);
+	if (!o->cmd[0])
+		ft_exit();
 	if (execve(read_path(env, o->cmd[0]), o->cmd, env) < 0)
 	{
 		ft_free(o->cmd);
@@ -49,11 +67,13 @@ void	child_2(char **env, char **av, t_data *o)
 		ft_error("Error dup2");
 	if (dup2(o->fdo, STDOUT) < 0)
 		ft_error("Error dup2");
-	o->cmd2 = ft_split(av[3], ' ');
 	close(o->fds[0]);
-	if (execve(read_path(env, o->cmd2[0]), o->cmd2, env) < 0)
+	o->cmd = ft_split(av[3], ' ');
+	if (!o->cmd[0])
+		ft_exit();
+	if (execve(read_path(env, o->cmd[0]), o->cmd, env) < 0)
 	{
-		ft_free(o->cmd2);
+		ft_free(o->cmd);
 		ft_error("Error in execve2");
 	}
 }
