@@ -6,7 +6,7 @@
 /*   By: mel-hadd <mel-hadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 16:20:01 by mel-hadd          #+#    #+#             */
-/*   Updated: 2024/03/15 22:21:16 by mel-hadd         ###   ########.fr       */
+/*   Updated: 2024/03/16 02:55:02 by mel-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,19 +40,21 @@ void	parent(char **env, char **av, t_data *o)
 void	first_child(char **env, char **av, t_data *o)
 {
 	o->fdi = file_open(av[1], INFILE);
-	if (dup2(o->fdi, STDIN) < 0)
+	if (dup2(o->fdi, STDIN) < 0 || (dup2(o->arr[o->i][1], STDOUT) < 0))
 		ft_error("Error dup2");
-	if (dup2(o->arr[o->i][1], STDOUT) < 0)
-		ft_error("Error dup2 child_first");
 	close_pipes(o);
 	o->cmd = ft_split(av[2], ' ');
 	if (!o->cmd[0])
 		ft_exit();
-	if (execve(read_path(env, o->cmd[0]), o->cmd, env) < 0)
+	o->path = read_path(env, o->cmd[0]);
+	if (!o->path)
 	{
 		ft_free(o->cmd);
-		ft_error("Error in execve1");
+		free(o->path);
+		ft_exit();
 	}
+	if (execve(o->path, o->cmd, env) < 0)
+		ft_error("Error in execve1");
 }
 
 void	n_child(char **env, char **av, t_data *o)
@@ -66,11 +68,15 @@ void	n_child(char **env, char **av, t_data *o)
 	o->cmd = ft_split(av[o->index_cmd], ' ');
 	if (!o->cmd[0])
 		ft_exit();
-	if (execve(read_path(env, o->cmd[0]), o->cmd, env) < 0)
+	o->path = read_path(env, o->cmd[0]);
+	if (!o->path)
 	{
 		ft_free(o->cmd);
-		ft_error("Error in execve3");
+		free(o->path);
+		ft_exit();
 	}
+	if (execve(o->path, o->cmd, env) < 0)
+		ft_error("Error in execve3");
 }
 
 void	last_child(char **env, char **av, t_data *o)
@@ -83,15 +89,19 @@ void	last_child(char **env, char **av, t_data *o)
 		ft_error("Error dup2 child_last");
 	if (dup2(o->fdo, STDOUT) < 0)
 		ft_error("Error dup2 child_last");
-	close_pipes(o);
 	o->cmd = ft_split(av[o->index_cmd], ' ');
+	close_pipes(o);
 	if (!o->cmd[0])
 		ft_exit();
-	if (execve(read_path(env, o->cmd[0]), o->cmd, env) < 0)
+	o->path = read_path(env, o->cmd[0]);
+	if (!o->path)
 	{
 		ft_free(o->cmd);
-		ft_error("Error in execve2");
+		free(o->path);
+		ft_exit();
 	}
+	if (execve(o->path, o->cmd, env) < 0)
+		ft_error("Error in execve2");
 }
 
 int	main(int ac, char **av, char **env)

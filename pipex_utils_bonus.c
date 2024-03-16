@@ -6,7 +6,7 @@
 /*   By: mel-hadd <mel-hadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 16:20:46 by mel-hadd          #+#    #+#             */
-/*   Updated: 2024/03/15 00:36:30 by mel-hadd         ###   ########.fr       */
+/*   Updated: 2024/03/16 03:01:07 by mel-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,11 @@ int	file_open(const char *filename, int i)
 		fd = open(filename, O_RDWR | O_CREAT | O_TRUNC, 0644);
 	else
 		fd = open(filename, O_RDWR | O_CREAT | O_APPEND, 0644);
+	if (fd == -1)
+	{
+		write(2, "Error file\n", 12);
+		exit(EXIT_FAILURE);
+	}
 	return (fd);
 }
 

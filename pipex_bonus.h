@@ -6,7 +6,7 @@
 /*   By: mel-hadd <mel-hadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 16:21:19 by mel-hadd          #+#    #+#             */
-/*   Updated: 2024/03/15 00:37:28 by mel-hadd         ###   ########.fr       */
+/*   Updated: 2024/03/15 23:56:00 by mel-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ typedef struct b_data
 	int		argc;
 	int		pipes;
 	int		index_cmd;
-	int		fds[2];
 	int		i;
 	int		x;
 	int		fdi;
@@ -42,8 +41,6 @@ typedef struct b_data
 	pid_t	pid2;
 	char	*path;
 	char	**cmd;
-	char	**cmd2;
-	char	**cmd3;
 	int		**arr;
 	char	*s;
 	int		here_doc;
