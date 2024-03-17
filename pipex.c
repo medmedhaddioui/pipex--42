@@ -6,7 +6,7 @@
 /*   By: mel-hadd <mel-hadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 15:30:55 by mel-hadd          #+#    #+#             */
-/*   Updated: 2024/03/16 01:07:06 by mel-hadd         ###   ########.fr       */
+/*   Updated: 2024/03/17 03:26:46 by mel-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,13 +55,12 @@ void	child(char **env, char **av, t_data *o)
 	o->cmd = ft_split(av[2], ' ');
 	close(o->fds[1]);
 	if (!o->cmd[0])
-		ft_exit();
+		ft_exit(o);
 	o->path = read_path(env, o->cmd[0]);
 	if (!o->path)
 	{
-		ft_free(o->cmd);
 		free(o->path);
-		ft_exit();
+		ft_exit(o);
 	}
 	if (execve(o->path, o->cmd, env) < 0)
 		ft_error("Error in execve1");
@@ -76,13 +75,12 @@ void	child_2(char **env, char **av, t_data *o)
 	close(o->fds[0]);
 	o->cmd = ft_split(av[3], ' ');
 	if (!o->cmd[0])
-		ft_exit();
+		ft_exit(o);
 	o->path = read_path(env, o->cmd[0]);
 	if (!o->path)
 	{
-		ft_free(o->cmd);
 		free(o->path);
-		ft_exit();
+		ft_exit(o);
 	}
 	if (execve(o->path, o->cmd, env) < 0)
 		ft_error("Error in execve2");

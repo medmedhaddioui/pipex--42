@@ -6,7 +6,7 @@
 /*   By: mel-hadd <mel-hadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 16:20:01 by mel-hadd          #+#    #+#             */
-/*   Updated: 2024/03/16 02:55:02 by mel-hadd         ###   ########.fr       */
+/*   Updated: 2024/03/17 03:39:27 by mel-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,12 @@ void	first_child(char **env, char **av, t_data *o)
 	close_pipes(o);
 	o->cmd = ft_split(av[2], ' ');
 	if (!o->cmd[0])
-		ft_exit();
+		ft_exit(o);
 	o->path = read_path(env, o->cmd[0]);
 	if (!o->path)
 	{
-		ft_free(o->cmd);
 		free(o->path);
-		ft_exit();
+		ft_exit(o);
 	}
 	if (execve(o->path, o->cmd, env) < 0)
 		ft_error("Error in execve1");
@@ -67,13 +66,12 @@ void	n_child(char **env, char **av, t_data *o)
 	close_pipes(o);
 	o->cmd = ft_split(av[o->index_cmd], ' ');
 	if (!o->cmd[0])
-		ft_exit();
+		ft_exit(o);
 	o->path = read_path(env, o->cmd[0]);
 	if (!o->path)
 	{
-		ft_free(o->cmd);
 		free(o->path);
-		ft_exit();
+		ft_exit(o);
 	}
 	if (execve(o->path, o->cmd, env) < 0)
 		ft_error("Error in execve3");
@@ -92,13 +90,12 @@ void	last_child(char **env, char **av, t_data *o)
 	o->cmd = ft_split(av[o->index_cmd], ' ');
 	close_pipes(o);
 	if (!o->cmd[0])
-		ft_exit();
+		ft_exit(o);
 	o->path = read_path(env, o->cmd[0]);
 	if (!o->path)
 	{
-		ft_free(o->cmd);
 		free(o->path);
-		ft_exit();
+		ft_exit(o);
 	}
 	if (execve(o->path, o->cmd, env) < 0)
 		ft_error("Error in execve2");

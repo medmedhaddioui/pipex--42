@@ -6,7 +6,7 @@
 /*   By: mel-hadd <mel-hadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 16:21:19 by mel-hadd          #+#    #+#             */
-/*   Updated: 2024/03/15 23:56:00 by mel-hadd         ###   ########.fr       */
+/*   Updated: 2024/03/17 03:39:04 by mel-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,6 @@ char		*find_path(char **arr, char *av);
 void		here_doc(char **env, char **av, t_data *o);
 int			ft_strcmp(char *s1, char *s2);
 void		ft_free(char **arr);
-void		ft_exit(void);
+void	ft_exit(t_data *o);
 
 #endif

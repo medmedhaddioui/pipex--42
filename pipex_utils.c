@@ -6,14 +6,15 @@
 /*   By: mel-hadd <mel-hadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 16:08:09 by mel-hadd          #+#    #+#             */
-/*   Updated: 2024/03/15 22:38:41 by mel-hadd         ###   ########.fr       */
+/*   Updated: 2024/03/17 03:25:37 by mel-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void	ft_exit(void)
+void	ft_exit(t_data *o)
 {
+	ft_free(o->cmd);
 	write(2, "command not found:\n", 19);
 	exit(EXIT_FAILURE);
 }
