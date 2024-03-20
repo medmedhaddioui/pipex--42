@@ -6,7 +6,7 @@
 /*   By: mel-hadd <mel-hadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 15:31:28 by mel-hadd          #+#    #+#             */
-/*   Updated: 2024/03/17 03:25:55 by mel-hadd         ###   ########.fr       */
+/*   Updated: 2024/03/20 19:51:29 by mel-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,10 @@
 
 # define STDIN 0
 # define STDOUT 1
-# define INFILE 1
-# define OUTFILE 0
+# define INFILE 0
+# define OUTFILE 1
+# define FLAG0 0
+# define FLAG1 1
 
 typedef struct m_data
 {
@@ -37,18 +39,18 @@ typedef struct m_data
 	char	*path;
 	char	**cmd;
 	char	**cmd2;
-
+	int flag;
+	
 }			t_data;
 
 int			file_open(const char *filename, int i);
-char		*read_path(char **env, char *cmd);
+char	*read_path(char **env, char *cmd, t_data *o);
 void		child(char **env, char **av, t_data *o);
 void		child_2(char **env, char **av, t_data *o);
 void		parent(char **env, char **av, t_data *o);
 void		ft_error(char *s);
 void		ft_free(char **arr);
 char		*find_path(char **arr, char *av);
-void	ft_exit(t_data *o);
-
+void	ft_exit(t_data *o, int flag);
 
 #endif

@@ -6,17 +6,27 @@
 /*   By: mel-hadd <mel-hadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:33:38 by mel-hadd          #+#    #+#             */
-/*   Updated: 2024/03/17 03:38:54 by mel-hadd         ###   ########.fr       */
+/*   Updated: 2024/03/20 18:18:56 by mel-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
 
-void	ft_exit(t_data *o)
+void	ft_exit(t_data *o, int flag)
 {
-	ft_free(o->cmd);
-	write(2, "command not found:\n", 19);
-	exit(EXIT_FAILURE);
+	if (flag == 0)
+	{
+		ft_free(o->cmd);
+		write(2, "pipex: command not found:\n", 27);
+		exit(EXIT_FAILURE);
+	}
+	else
+	{
+		write(2,"pipex: ",8);
+		perror(o->cmd[0]);
+		ft_free(o->cmd);
+		exit(EXIT_FAILURE);
+	}
 }
 
 void	ft_error(char *s)
@@ -39,13 +49,14 @@ int	ft_strcmp(char *s1, char *s2)
 
 void	here_doc(char **env, char **av, t_data *o)
 {
+	o->arr = creat_pipes(o);
 	o->pid = fork();
 	if (o->pid == 0)
 	{
 		if (dup2(o->arr[0][1], STDOUT) < 0)
 			ft_error("Error dup2");
 		o->s = get_next_line(0);
-		while (ft_strcmp(o->s, av[2]) != 0)
+		while (o->s && ft_strcmp(o->s, av[2]) != 0)
 		{
 			ft_putstr_fd(o->s, 1);
 			free(o->s);

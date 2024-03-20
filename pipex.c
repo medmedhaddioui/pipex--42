@@ -6,7 +6,7 @@
 /*   By: mel-hadd <mel-hadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 15:30:55 by mel-hadd          #+#    #+#             */
-/*   Updated: 2024/03/17 03:26:46 by mel-hadd         ###   ########.fr       */
+/*   Updated: 2024/03/20 19:51:37 by mel-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,20 +16,20 @@ int	file_open(const char *filename, int i)
 {
 	int	fd;
 
-	if (i == 1)
+	if (i == 0)
 	{
 		if (access(filename, F_OK))
-			ft_error("Error infile");
+			ft_error("Error input file");
 		fd = open(filename, O_RDONLY, 0644);
 		if (fd == -1)
-			exit(EXIT_FAILURE);
+			ft_error("Error input file");
 		return (fd);
 	}
 	else
 	{
 		fd = open(filename, O_RDWR | O_CREAT | O_TRUNC, 0644);
 		if (fd == -1)
-			exit(EXIT_FAILURE);
+			ft_error ("Error output file");
 		return (fd);
 	}
 }
@@ -55,12 +55,12 @@ void	child(char **env, char **av, t_data *o)
 	o->cmd = ft_split(av[2], ' ');
 	close(o->fds[1]);
 	if (!o->cmd[0])
-		ft_exit(o);
-	o->path = read_path(env, o->cmd[0]);
+		ft_exit(o, FLAG0);
+	o->path = read_path(env, o->cmd[0], o);
 	if (!o->path)
 	{
 		free(o->path);
-		ft_exit(o);
+		ft_exit(o, FLAG0);
 	}
 	if (execve(o->path, o->cmd, env) < 0)
 		ft_error("Error in execve1");
@@ -75,12 +75,12 @@ void	child_2(char **env, char **av, t_data *o)
 	close(o->fds[0]);
 	o->cmd = ft_split(av[3], ' ');
 	if (!o->cmd[0])
-		ft_exit(o);
-	o->path = read_path(env, o->cmd[0]);
+		ft_exit(o, FLAG0);
+	o->path = read_path(env, o->cmd[0], o);
 	if (!o->path)
 	{
 		free(o->path);
-		ft_exit(o);
+		ft_exit(o, FLAG0);
 	}
 	if (execve(o->path, o->cmd, env) < 0)
 		ft_error("Error in execve2");
@@ -101,5 +101,4 @@ int	main(int ac, char **av, char **env)
 		child(env, av, &o);
 	parent(env, av, &o);
 	wait(NULL);
-	return (0);
 }

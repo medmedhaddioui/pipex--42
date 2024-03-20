@@ -6,7 +6,7 @@
 /*   By: mel-hadd <mel-hadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 16:20:46 by mel-hadd          #+#    #+#             */
-/*   Updated: 2024/03/16 03:01:07 by mel-hadd         ###   ########.fr       */
+/*   Updated: 2024/03/20 18:12:36 by mel-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,10 @@ int	file_open(const char *filename, int i)
 	if (i == 0)
 	{
 		if (access(filename, F_OK))
-			ft_error("Error infile");
+			ft_error("Error input file");
 		fd = open(filename, O_RDONLY, 0644);
+		if (fd == -1)
+			ft_error("Error input file");
 		return (fd);
 	}
 	else if (i == 1)
@@ -28,14 +30,11 @@ int	file_open(const char *filename, int i)
 	else
 		fd = open(filename, O_RDWR | O_CREAT | O_APPEND, 0644);
 	if (fd == -1)
-	{
-		write(2, "Error file\n", 12);
-		exit(EXIT_FAILURE);
-	}
+		ft_error("Error output file");
 	return (fd);
 }
 
-char	*read_path(char **env, char *cmd)
+char	*read_path(char **env, char *cmd, t_data *o)
 {
 	char	**arr;
 	int		i;
@@ -44,8 +43,16 @@ char	*read_path(char **env, char *cmd)
 	i = 0;
 	if (access(cmd, F_OK | X_OK) != -1)
 		return (cmd);
-	if (cmd[0] == '/' || cmd[0] == '.')
-		return (NULL);
+	while (cmd[i])
+	{
+		if (cmd[i++] == '/')
+			ft_exit(o, FLAG1);
+	}
+	if (cmd[0] == '.')
+			return NULL;
+	if (!env)
+		return NULL;
+	i = 0;
 	while (env[i] != NULL && ft_strncmp(env[i], "PATH", 4) != 0)
 		i++;
 	if (env[i] == NULL)

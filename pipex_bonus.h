@@ -6,7 +6,7 @@
 /*   By: mel-hadd <mel-hadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 16:21:19 by mel-hadd          #+#    #+#             */
-/*   Updated: 2024/03/17 03:39:04 by mel-hadd         ###   ########.fr       */
+/*   Updated: 2024/03/19 20:54:50 by mel-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@
 # define INFILE 0
 # define OUTFILE 1
 # define HERE_DOC_FILE 2
+# define FLAG0 0
+# define FLAG1 1
 
 typedef struct b_data
 {
@@ -47,7 +49,7 @@ typedef struct b_data
 }			t_data;
 
 void		ft_error(char *s);
-char		*read_path(char **env, char *av);
+char	*read_path(char **env, char *cmd, t_data *o);
 int			file_open(const char *filename, int i);
 void		first_child(char **env, char **av, t_data *o);
 void		n_child(char **env, char **av, t_data *o);
@@ -59,6 +61,6 @@ char		*find_path(char **arr, char *av);
 void		here_doc(char **env, char **av, t_data *o);
 int			ft_strcmp(char *s1, char *s2);
 void		ft_free(char **arr);
-void	ft_exit(t_data *o);
+void	ft_exit(t_data *o, int flag);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: mel-hadd <mel-hadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 16:20:01 by mel-hadd          #+#    #+#             */
-/*   Updated: 2024/03/17 03:39:27 by mel-hadd         ###   ########.fr       */
+/*   Updated: 2024/03/20 18:18:44 by mel-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,12 @@ void	first_child(char **env, char **av, t_data *o)
 	close_pipes(o);
 	o->cmd = ft_split(av[2], ' ');
 	if (!o->cmd[0])
-		ft_exit(o);
-	o->path = read_path(env, o->cmd[0]);
+		ft_exit(o, FLAG0);
+	o->path = read_path(env, o->cmd[0], o);
 	if (!o->path)
 	{
 		free(o->path);
-		ft_exit(o);
+		ft_exit(o, FLAG0);
 	}
 	if (execve(o->path, o->cmd, env) < 0)
 		ft_error("Error in execve1");
@@ -66,12 +66,12 @@ void	n_child(char **env, char **av, t_data *o)
 	close_pipes(o);
 	o->cmd = ft_split(av[o->index_cmd], ' ');
 	if (!o->cmd[0])
-		ft_exit(o);
-	o->path = read_path(env, o->cmd[0]);
+		ft_exit(o, FLAG0);
+	o->path = read_path(env, o->cmd[0], o);
 	if (!o->path)
 	{
 		free(o->path);
-		ft_exit(o);
+		ft_exit(o, FLAG0);
 	}
 	if (execve(o->path, o->cmd, env) < 0)
 		ft_error("Error in execve3");
@@ -90,12 +90,12 @@ void	last_child(char **env, char **av, t_data *o)
 	o->cmd = ft_split(av[o->index_cmd], ' ');
 	close_pipes(o);
 	if (!o->cmd[0])
-		ft_exit(o);
-	o->path = read_path(env, o->cmd[0]);
+		ft_exit(o, FLAG0);
+	o->path = read_path(env, o->cmd[0], o);
 	if (!o->path)
 	{
 		free(o->path);
-		ft_exit(o);
+		ft_exit(o, FLAG0);
 	}
 	if (execve(o->path, o->cmd, env) < 0)
 		ft_error("Error in execve2");
@@ -106,19 +106,21 @@ int	main(int ac, char **av, char **env)
 	t_data	o;
 
 	if (ac < 5)
-		return (0);
+		return (1);
 	o.argc = ac;
 	o.pipes = ac - 4;
-	o.arr = creat_pipes(&o);
 	o.i = 0;
 	o.index_cmd = 3;
 	o.here_doc = 0;
 	if (ft_strncmp(av[1], "here_doc", 8) == 0)
 	{
+		if (ac < 6)
+			return (1);
 		o.here_doc = 1;
 		here_doc(env, av, &o);
 		return (0);
 	}
+	o.arr = creat_pipes(&o);
 	o.pid = fork();
 	if (o.pid == 0)
 		first_child(env, av, &o);

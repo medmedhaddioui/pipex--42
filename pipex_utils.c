@@ -6,32 +6,48 @@
 /*   By: mel-hadd <mel-hadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 16:08:09 by mel-hadd          #+#    #+#             */
-/*   Updated: 2024/03/17 03:25:37 by mel-hadd         ###   ########.fr       */
+/*   Updated: 2024/03/20 03:55:07 by mel-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void	ft_exit(t_data *o)
+void	ft_exit(t_data *o, int flag)
 {
-	ft_free(o->cmd);
-	write(2, "command not found:\n", 19);
-	exit(EXIT_FAILURE);
+	if (flag == 0)
+	{
+		ft_free(o->cmd);
+		write(2, "pipex: command not found:\n", 27);
+		exit(EXIT_FAILURE);
+	}
+	else
+	{
+		write(2,"pipex: ",8);
+		perror(o->cmd[0]);
+		ft_free(o->cmd);
+		exit(EXIT_FAILURE);
+	}
 }
 
-char	*read_path(char **env, char *cmd)
+char	*read_path(char **env, char *cmd, t_data *o)
 {
 	char	**arr;
 	int		i;
 	char	*path;
 
 	i = 0;
-	if (cmd[i] == '\0')
-		return (NULL);
 	if (access(cmd, F_OK | X_OK) != -1)
 		return (cmd);
-	if (cmd[0] == '/' || cmd[0] == '.')
-		return (NULL);
+	while (cmd[i])
+	{
+		if (cmd[i++] == '/')
+			ft_exit(o, FLAG1);
+	}
+	if (cmd[0] == '.')
+			return NULL;
+	if (!env)
+		return NULL;
+	i = 0;
 	while (env[i] != NULL && ft_strncmp(env[i], "PATH", 4) != 0)
 		i++;
 	if (env[i] == NULL)

@@ -11,7 +11,7 @@ OBJECT = $(SRC:.c=.o)
 OBJECT_BONUS = $(SRC_BONUS:.c=.o)
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
 LIBFT_A = libft/libft.a
 
 all : $(NAME)
