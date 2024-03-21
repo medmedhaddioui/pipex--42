@@ -6,7 +6,7 @@
 /*   By: mel-hadd <mel-hadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 15:30:55 by mel-hadd          #+#    #+#             */
-/*   Updated: 2024/03/21 00:33:07 by mel-hadd         ###   ########.fr       */
+/*   Updated: 2024/03/21 21:00:39 by mel-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	file_open(const char *filename, int i)
 	{
 		fd = open(filename, O_RDWR | O_CREAT | O_TRUNC, 0644);
 		if (fd == -1)
-			ft_error ("Error output file");
+			ft_error("Error output file");
 		return (fd);
 	}
 }
@@ -43,7 +43,6 @@ void	parent(char **env, char **av, t_data *o)
 		child_2(env, av, o);
 	close(o->fds[1]);
 	close(o->fds[0]);
-	wait(NULL);
 }
 
 void	child(char **env, char **av, t_data *o)
@@ -89,9 +88,11 @@ void	child_2(char **env, char **av, t_data *o)
 int	main(int ac, char **av, char **env)
 {
 	t_data	o;
+	int		status;
 
 	if (ac != 5)
-		return 1;
+		return (1);
+	o.f = 0;
 	if (pipe(o.fds) == -1)
 		ft_error("Error pipe");
 	o.pid = fork();
@@ -100,6 +101,12 @@ int	main(int ac, char **av, char **env)
 	if (o.pid == 0)
 		child(env, av, &o);
 	parent(env, av, &o);
-	wait(NULL);
-	return 0;
+	waitpid(o.pid2, &status, 0);
+	while (wait(NULL) > 0)
+		;
+	if (WIFEXITED(status))
+		return (WEXITSTATUS(status));
+	if (WIFSIGNALED(status))
+		return (128 + WTERMSIG(status));
+	return (0);
 }

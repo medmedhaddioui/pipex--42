@@ -6,7 +6,7 @@
 /*   By: mel-hadd <mel-hadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 16:21:19 by mel-hadd          #+#    #+#             */
-/*   Updated: 2024/03/21 01:25:37 by mel-hadd         ###   ########.fr       */
+/*   Updated: 2024/03/21 21:00:49 by mel-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # define HERE_DOC_FILE 2
 # define FLAG0 0
 # define FLAG1 1
+# define FLAG2 2
 
 typedef struct b_data
 {
@@ -46,11 +47,11 @@ typedef struct b_data
 	int		**arr;
 	char	*s;
 	int		here_doc;
+	pid_t	pid_last;
 }			t_data;
 
-void		ft_error(char *s);
-char	*read_path(char **env, char *cmd, t_data *o);
-int	file_open(const char *filename, int i, t_data *o);
+char		*read_path(char **env, char *cmd, t_data *o);
+int			file_open(const char *filename, int i, t_data *o);
 void		first_child(char **env, char **av, t_data *o);
 void		n_child(char **env, char **av, t_data *o);
 void		last_child(char **env, char **av, t_data *o);
@@ -61,6 +62,7 @@ char		*find_path(char **arr, char *av);
 void		here_doc(char **env, char **av, t_data *o);
 int			ft_strcmp(char *s1, char *s2);
 void		ft_free(char **arr);
-void	ft_exit(t_data *o, int flag);
+void		ft_exit(char *s, t_data *o, int flag);
+int			ft_wait(t_data *o);
 
 #endif

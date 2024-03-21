@@ -6,7 +6,7 @@
 /*   By: mel-hadd <mel-hadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 16:20:46 by mel-hadd          #+#    #+#             */
-/*   Updated: 2024/03/21 01:26:48 by mel-hadd         ###   ########.fr       */
+/*   Updated: 2024/03/21 20:33:33 by mel-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ int	file_open(const char *filename, int i, t_data *o)
 	if (i == 0)
 	{
 		if (access(filename, F_OK))
-			ft_error("Error input file");
+			ft_exit("Error input file", o, FLAG2);
 		fd = open(filename, O_RDONLY, 0644);
 		if (fd == -1)
-			ft_error("Error input file");
+			ft_exit("Error input file", o, FLAG2);
 		return (fd);
 	}
 	else if (i == 1)
@@ -32,7 +32,7 @@ int	file_open(const char *filename, int i, t_data *o)
 	if (fd == -1)
 	{
 		close_pipes(o);
-		ft_error("Error output file");
+		ft_exit("Error output file", o, FLAG2);
 	}
 	return (fd);
 }
@@ -49,12 +49,12 @@ char	*read_path(char **env, char *cmd, t_data *o)
 	while (cmd[i])
 	{
 		if (cmd[i++] == '/')
-			ft_exit(o, FLAG1);
+			ft_exit(NULL, o, FLAG1);
 	}
 	if (cmd[0] == '.')
-			return NULL;
+		return (NULL);
 	if (!env)
-		return NULL;
+		return (NULL);
 	i = 0;
 	while (env[i] != NULL && ft_strncmp(env[i], "PATH", 4) != 0)
 		i++;
@@ -122,7 +122,7 @@ int	**creat_pipes(t_data *o)
 			return (NULL);
 		}
 		if (pipe(arr_pipes[i]) < 0)
-			perror("Error pipe");
+			ft_exit("error pipe", o, FLAG2);
 		i++;
 	}
 	return (arr_pipes);

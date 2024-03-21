@@ -6,7 +6,7 @@
 /*   By: mel-hadd <mel-hadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 16:08:09 by mel-hadd          #+#    #+#             */
-/*   Updated: 2024/03/21 00:16:16 by mel-hadd         ###   ########.fr       */
+/*   Updated: 2024/03/21 17:53:33 by mel-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	ft_exit(t_data *o, int flag)
 	}
 	else
 	{
-		write(2,"pipex: ",8);
+		write(2, "pipex: ", 8);
 		perror(o->cmd[0]);
 		ft_free(o->cmd);
 		exit(EXIT_FAILURE);
@@ -44,9 +44,9 @@ char	*read_path(char **env, char *cmd, t_data *o)
 			ft_exit(o, FLAG1);
 	}
 	if (cmd[0] == '.')
-			return NULL;
+		return (NULL);
 	if (!env)
-		return NULL;
+		return (NULL);
 	i = 0;
 	while (env[i] != NULL && ft_strncmp(env[i], "PATH", 4) != 0)
 		i++;
