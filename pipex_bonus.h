@@ -6,7 +6,7 @@
 /*   By: mel-hadd <mel-hadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 16:21:19 by mel-hadd          #+#    #+#             */
-/*   Updated: 2024/03/19 20:54:50 by mel-hadd         ###   ########.fr       */
+/*   Updated: 2024/03/21 01:25:37 by mel-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ typedef struct b_data
 
 void		ft_error(char *s);
 char	*read_path(char **env, char *cmd, t_data *o);
-int			file_open(const char *filename, int i);
+int	file_open(const char *filename, int i, t_data *o);
 void		first_child(char **env, char **av, t_data *o);
 void		n_child(char **env, char **av, t_data *o);
 void		last_child(char **env, char **av, t_data *o);

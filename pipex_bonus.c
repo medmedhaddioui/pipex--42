@@ -6,7 +6,7 @@
 /*   By: mel-hadd <mel-hadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 16:20:01 by mel-hadd          #+#    #+#             */
-/*   Updated: 2024/03/20 18:18:44 by mel-hadd         ###   ########.fr       */
+/*   Updated: 2024/03/21 01:28:46 by mel-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	parent(char **env, char **av, t_data *o)
 
 void	first_child(char **env, char **av, t_data *o)
 {
-	o->fdi = file_open(av[1], INFILE);
+	o->fdi = file_open(av[1], INFILE, o);
 	if (dup2(o->fdi, STDIN) < 0 || (dup2(o->arr[o->i][1], STDOUT) < 0))
 		ft_error("Error dup2");
 	close_pipes(o);
@@ -53,16 +53,16 @@ void	first_child(char **env, char **av, t_data *o)
 		ft_exit(o, FLAG0);
 	}
 	if (execve(o->path, o->cmd, env) < 0)
-		ft_error("Error in execve1");
+		ft_exit(o, FLAG1);
 }
 
 void	n_child(char **env, char **av, t_data *o)
 {
 	if (dup2(o->arr[o->i][0], STDIN) < 0)
-		perror("Error dup2 middle");
+		ft_error("Error dup2 middle");
 	o->i++;
 	if (dup2(o->arr[o->i][1], STDOUT) < 0)
-		perror("Error dup2 middle");
+		ft_error("Error dup2 middle");
 	close_pipes(o);
 	o->cmd = ft_split(av[o->index_cmd], ' ');
 	if (!o->cmd[0])
@@ -74,21 +74,22 @@ void	n_child(char **env, char **av, t_data *o)
 		ft_exit(o, FLAG0);
 	}
 	if (execve(o->path, o->cmd, env) < 0)
-		ft_error("Error in execve3");
+		ft_exit(o, FLAG1);
+
 }
 
 void	last_child(char **env, char **av, t_data *o)
 {
 	if (o->here_doc == 1)
-		o->fdo = file_open(av[o->argc - 1], HERE_DOC_FILE);
+		o->fdo = file_open(av[o->argc - 1], HERE_DOC_FILE, o);
 	else
-		o->fdo = file_open(av[o->argc - 1], OUTFILE);
+		o->fdo = file_open(av[o->argc - 1], OUTFILE, o);
 	if (dup2(o->arr[o->i][0], STDIN) < 0)
 		ft_error("Error dup2 child_last");
 	if (dup2(o->fdo, STDOUT) < 0)
 		ft_error("Error dup2 child_last");
-	o->cmd = ft_split(av[o->index_cmd], ' ');
 	close_pipes(o);
+	o->cmd = ft_split(av[o->index_cmd], ' ');
 	if (!o->cmd[0])
 		ft_exit(o, FLAG0);
 	o->path = read_path(env, o->cmd[0], o);
@@ -98,7 +99,7 @@ void	last_child(char **env, char **av, t_data *o)
 		ft_exit(o, FLAG0);
 	}
 	if (execve(o->path, o->cmd, env) < 0)
-		ft_error("Error in execve2");
+		ft_exit(o, FLAG1);
 }
 
 int	main(int ac, char **av, char **env)

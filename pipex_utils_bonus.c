@@ -6,13 +6,13 @@
 /*   By: mel-hadd <mel-hadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 16:20:46 by mel-hadd          #+#    #+#             */
-/*   Updated: 2024/03/20 18:12:36 by mel-hadd         ###   ########.fr       */
+/*   Updated: 2024/03/21 01:26:48 by mel-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
 
-int	file_open(const char *filename, int i)
+int	file_open(const char *filename, int i, t_data *o)
 {
 	int	fd;
 
@@ -30,7 +30,10 @@ int	file_open(const char *filename, int i)
 	else
 		fd = open(filename, O_RDWR | O_CREAT | O_APPEND, 0644);
 	if (fd == -1)
+	{
+		close_pipes(o);
 		ft_error("Error output file");
+	}
 	return (fd);
 }
 

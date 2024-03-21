@@ -6,7 +6,7 @@
 /*   By: mel-hadd <mel-hadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 15:30:55 by mel-hadd          #+#    #+#             */
-/*   Updated: 2024/03/20 19:51:37 by mel-hadd         ###   ########.fr       */
+/*   Updated: 2024/03/21 00:33:07 by mel-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	child(char **env, char **av, t_data *o)
 		ft_exit(o, FLAG0);
 	}
 	if (execve(o->path, o->cmd, env) < 0)
-		ft_error("Error in execve1");
+		ft_exit(o, FLAG1);
 }
 
 void	child_2(char **env, char **av, t_data *o)
@@ -83,7 +83,7 @@ void	child_2(char **env, char **av, t_data *o)
 		ft_exit(o, FLAG0);
 	}
 	if (execve(o->path, o->cmd, env) < 0)
-		ft_error("Error in execve2");
+		ft_exit(o, FLAG1);
 }
 
 int	main(int ac, char **av, char **env)
@@ -91,7 +91,7 @@ int	main(int ac, char **av, char **env)
 	t_data	o;
 
 	if (ac != 5)
-		exit(1);
+		return 1;
 	if (pipe(o.fds) == -1)
 		ft_error("Error pipe");
 	o.pid = fork();
@@ -101,4 +101,5 @@ int	main(int ac, char **av, char **env)
 		child(env, av, &o);
 	parent(env, av, &o);
 	wait(NULL);
+	return 0;
 }

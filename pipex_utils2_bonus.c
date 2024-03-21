@@ -6,7 +6,7 @@
 /*   By: mel-hadd <mel-hadd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:33:38 by mel-hadd          #+#    #+#             */
-/*   Updated: 2024/03/20 18:18:56 by mel-hadd         ###   ########.fr       */
+/*   Updated: 2024/03/21 00:47:53 by mel-hadd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,27 +50,17 @@ int	ft_strcmp(char *s1, char *s2)
 void	here_doc(char **env, char **av, t_data *o)
 {
 	o->arr = creat_pipes(o);
-	o->pid = fork();
-	if (o->pid == 0)
+	o->s = get_next_line(0);
+	while (o->s && ft_strcmp(o->s, av[2]) != 0)
 	{
-		if (dup2(o->arr[0][1], STDOUT) < 0)
-			ft_error("Error dup2");
-		o->s = get_next_line(0);
-		while (o->s && ft_strcmp(o->s, av[2]) != 0)
-		{
-			ft_putstr_fd(o->s, 1);
-			free(o->s);
-			o->s = get_next_line(0);
-		}
+		ft_putstr_fd(o->s, o->arr[0][1]);
 		free(o->s);
-		close_pipes(o);
-		exit(EXIT_SUCCESS);
+		o->s = get_next_line(0);
 	}
+	get_next_line(-1);
+	free(o->s);
 	parent(env, av, o);
-	while (wait(NULL) > 0)
-		;
 }
-
 void	ft_free(char **arr)
 {
 	int	i;
